@@ -1,6 +1,12 @@
 package tp1.control.commands;
 
 import java.util.Arrays;
+
+import tp1.exceptions.CommandExecuteException;
+import tp1.exceptions.CommandParseException;
+import tp1.exceptions.GameModelException;
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
@@ -23,25 +29,45 @@ public class AddObjectCommand extends AbstractCommand{
 	}
 
 	@Override
-	public void execute(GameModel game, GameView view) {
+	public void execute(GameModel game, GameView view) throws CommandExecuteException{
 		// game - game llama a gamefactory y añade el objeto
 		//System.out.println("exe");
+		/*
 		if(!game.parseGameObjectFactory(objWords)) {
 			view.showError(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)));
 		}else {
 			view.showGame();
 		}
+		*/
+		try {
+			game.parseGameObjectFactory(objWords);
+			view.showGame();
+			//Estos son para errores de parseo o pos
+			// Miro
+		}catch (ObjectParseException | OffBoardException e){
+			throw new CommandExecuteException(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)), 
+                e);
+		} catch (GameModelException e) {
+			//Cualquier otro gameModelException
+			throw new CommandExecuteException(e.getMessage(), e);
+		}
+		
 	}
 
 	@Override
-	public Command parse(String[] commandWords) {
+	public Command parse(String[] commandWords) throws CommandParseException{
 		
 		// comprobamos longitud y ejeccucion del comando deseado
 		if (commandWords.length >= 3 && (commandWords[0].toLowerCase().equals(this.NAME) || commandWords[0].toLowerCase().equals(this.SHORTCUT))) {
 			// preparar objWords para eliminar el comando
 			// 0 = (x,y), 1 = objeto , 2 = atributo (opc), 3 = atributo (opc)
-			this.objWords = Arrays.copyOfRange(commandWords, 1, commandWords.length);
-			return this;
+			if(commandWords.length >= 3){
+				this.objWords = Arrays.copyOfRange(commandWords, 1, commandWords.length);
+				return this;
+			}else{
+				throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			}
+			
 		}
 				
 		return null;

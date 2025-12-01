@@ -3,6 +3,8 @@ package tp1.control.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import tp1.exceptions.CommandExecuteException;
+import tp1.exceptions.CommandParseException;
 import tp1.logic.Action;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
@@ -33,7 +35,7 @@ public class ActionCommand extends AbstractCommand{
 	//Metodo parse : Encargada de convertir el texto en acciones
 	
 	@Override
-	public Command parse(String[] words) {
+	public Command parse(String[] words) throws CommandParseException{
 		if(words.length >= 2 && 
 				(words[0].toLowerCase().equalsIgnoreCase(ActionCommand.SHORTCUT) || words[0].toLowerCase().equalsIgnoreCase(ActionCommand.SHORTCUT))) {
 			
@@ -54,7 +56,7 @@ public class ActionCommand extends AbstractCommand{
 	//Metodo encargado de agragar esas acciones a la lista de acciones de Mario 
 	//y Actualiza el juego
 	@Override
-	public void execute(GameModel game, GameView view) {
+	public void execute(GameModel game, GameView view) throws CommandExecuteException{
 		//Añadir todas la sacciones a la lista de acciones de Mario
 		//Copiar private actions a mario actionlist 
 		while(!actions.isEmpty()) {

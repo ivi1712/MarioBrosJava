@@ -2,6 +2,10 @@ package tp1.logic;
 
 
 
+import tp1.exceptions.GameModelException;
+import tp1.exceptions.NoAvaibleCreateException;
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
 import tp1.logic.gameobjects.*;
 import tp1.view.Messages;
 
@@ -33,23 +37,37 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		reset(nLevel);
 	}
 	
-	public boolean parseGameObjectFactory(String objWords[]){
+	
+	public void parseGameObjectFactory(String objWords[]) throws OffBoardException, ObjectParseException, NoAvaibleCreateException {
 		// intentamos crear Mario
 		GameObject nm = new Mario();
 		nm = nm.parse(objWords, this);
 		if (nm != null) {
-			if(!gameObjects.addObjectFactory(nm)) return false;
-			nm.addMarioGame();
-			return true;
+			//if(!gameObjects.addObjectFactory(nm)) return false;
+			try {
+				gameObjects.addObjectFactory(nm);
+				nm.addMarioGame();
+			} catch(NoAvaibleCreateException e) {
+				throw e;
+			}
 		}
 		
-		GameObject gameobject = GameObjectFactory.parse(objWords, this);
-		if (gameobject != null) {
-			if(!gameObjects.addObjectFactory(gameobject)) return false;
-			return true;
-		}else{
-			return false;
+		try {
+			GameObject gameobject = GameObjectFactory.parse(objWords, this);
+			gameObjects.addObjectFactory(gameobject);
+		} catch (Exception e) {
+			// TODO: handle exception
+			
 		}
+		
+		
+		
+//		if (gameobject != null) {
+//			if(!gameObjects.addObjectFactory(gameobject)) return false;
+//			return true;
+//		}else{
+//			return false;
+//		}
 		
 	}
 	
@@ -358,6 +376,10 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	public boolean interactWith() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public boolean offBoard(Position p) {
+		return p.isRoof(p) || p.isLateral(p);
 	}
 	
 }

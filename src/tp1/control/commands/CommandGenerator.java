@@ -21,14 +21,18 @@ public class CommandGenerator {
 	);
 
 	public static Command parse(String[] commandWords) throws CommandParseException {		
+		
 		Command parsed = null;
 		for (Command c: AVAILABLE_COMMANDS) {
+			try{
+				parsed = c.parse(commandWords);
+				if(parsed != null) return parsed;
+			} catch (CommandParseException e){
+				throw e;
+			}
 			
-			parsed = c.parse(commandWords);
-			if(parsed != null) return parsed;
 		}
-		if(parsed == null) throw new CommandParseException(Messages.UNKNOWN_COMMAND.formatted(commandWords[0]));
-		return null;
+		throw new CommandParseException(Messages.UNKNOWN_COMMAND.formatted(commandWords[0]));
 	}
 		
 	public static String commandHelp() {

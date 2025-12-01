@@ -36,8 +36,8 @@ public class Mario extends MovingObject{
 		if (objWords[1].toLowerCase().equals(this.NAME)|| objWords[1].toLowerCase().equals(this.SHORTCUT)) {
 			// pase Position and check not null
 			Position p = Position.parsePosition(objWords[0]);
-			if (p == null) return null;
-			
+			//if (p == null) return null;
+
 			Mario m = new Mario(game, p);
 			if (objWords.length >2) {
 				Action act = Action.parseAction(objWords[2]);

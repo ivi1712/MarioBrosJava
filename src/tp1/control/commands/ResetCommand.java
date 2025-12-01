@@ -1,5 +1,6 @@
 package tp1.control.commands;
 
+import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.CommandParseException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
@@ -20,7 +21,7 @@ public class ResetCommand extends AbstractCommand {
 	}
 
     @Override
-    public void execute(GameModel game, GameView view) {
+    public void execute(GameModel game, GameView view) throws CommandExecuteException {
     	if(level == null) {
     		game.reset();
     		view.showGame();
@@ -54,14 +55,6 @@ public class ResetCommand extends AbstractCommand {
                     // Empezamos a mirar dígitos a partir del siguiente carácter
                     i = 1; 
                 }
-                
-                // comporbar que no es -(NaN)
-//                for (; i < arg.length(); i++) {
-//                    char c = arg.charAt(i);
-//                    if (!Character.isDigit(c)) {
-//                        return null;
-//                    }
-//                }
                 
                 // 3. Si llegamos aquí, es seguro convertirlo
                 try {

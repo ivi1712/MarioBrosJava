@@ -1,5 +1,7 @@
 package tp1.logic;
 
+import tp1.exceptions.CommandParseException;
+import tp1.exceptions.NoAvaibleCreateException;
 import tp1.logic.gameobjects.*;
 import tp1.view.Messages;
 
@@ -49,14 +51,12 @@ public class GameObjectContainer {
 	}
 
 	
-	public boolean addObjectFactory(GameObject obj) {
-		for (GameObject gameObject : gameObjects) {
-			if(gameObject.isSolid() && obj.isInPosition(gameObject)) return false;
-		}
+	public void addObjectFactory(GameObject obj) throws NoAvaibleCreateException{
+		for (GameObject gameObject : gameObjects)
+			if(obj.isInPosition(gameObject)) throw new NoAvaibleCreateException(Messages.NOAVAIBLE_GAME_OBJECT);
 		this.gameObjects.add(obj);
-		return true;
+		//return true;
 	}
-	
 	
 	// para la lista de pendientes
 	public void addPending(GameObject obj) {
