@@ -38,7 +38,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	}
 	
 	
-	public void parseGameObjectFactory(String objWords[]) throws OffBoardException, ObjectParseException, NoAvaibleCreateException {
+	public void parseGameObjectFactory(String objWords[]) throws OffBoardException, ObjectParseException {
 		// intentamos crear Mario
 		GameObject nm = new Mario();
 		nm = nm.parse(objWords, this);
@@ -47,10 +47,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			try {
 				gameObjects.addObjectFactory(nm);
 				nm.addMarioGame();
-			} catch(NoAvaibleCreateException e) {
-				throw e;
 			}
-		}
 		
 		try {
 			GameObject gameobject = GameObjectFactory.parse(objWords, this);
@@ -59,16 +56,6 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			// TODO: handle exception
 			
 		}
-		
-		
-		
-//		if (gameobject != null) {
-//			if(!gameObjects.addObjectFactory(gameobject)) return false;
-//			return true;
-//		}else{
-//			return false;
-//		}
-		
 	}
 	
 	public void addMario(Mario m) {

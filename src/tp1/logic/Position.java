@@ -1,6 +1,7 @@
 package tp1.logic;
 
 import tp1.exceptions.OffBoardException;
+import tp1.view.Messages;
 
 public final class Position {
 
@@ -39,17 +40,23 @@ public final class Position {
 		return "(" + this.col + "," + this.row + ")";
 	}
 	
-	public static Position parsePosition(String parse) throws OffBoardException {
+	public static Position parsePosition(String parse) throws NumberFormatException{
 		if (parse == null) return null;
 		String[] parseList = parse.split(",");
 		parseList[0] = parseList[0].replaceAll("\\(", "");
 		parseList[1] = parseList[1].replaceAll("\\)", "");
-		Position p = new Position(Integer.parseInt(parseList[0]), Integer.parseInt(parseList[1]));
-		if(p.isVacio(p)|| p.isLateral(p)){
-			throw new OffBoardException();
-
-		} 
-		else return p;
+		String valor = null;
+		Position p;
+		try {
+			valor = parseList[0];
+			int x = Integer.parseInt(valor);
+			valor = parseList[1];
+			int y = Integer.parseInt(valor);
+			p = new Position(x, y);
+		} catch(NumberFormatException e) {
+			throw new NumberFormatException(String.format("For input string: \"%s\"  ", valor));
+		}
+		return p;
 	}
 
 }

@@ -14,5 +14,5 @@ public interface GameModel {
 	public void exit();
 	public void parseGameObjectFactory(String objWords[]) throws ObjectParseException, OffBoardException;
 	public void resetStats();
-	public void addObject(String[] objWords) throws OffBoardException, ObjectParseException;
+	//public void addObject(String[] objWords) throws OffBoardException, ObjectParseException;
 }

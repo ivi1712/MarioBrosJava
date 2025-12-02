@@ -1,5 +1,6 @@
 package tp1.logic.gameobjects;
 
+import tp1.exceptions.GameParseException;
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -26,7 +27,7 @@ public class Box extends GameObject {
 		return this.full;
 	}
 	
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws GameParseException {
 
 		// comprobacion de mario 
 		if (objWords[1].toLowerCase().equals(this.NAME)|| objWords[1].toLowerCase().equals(this.SHORTCUT)) {

@@ -30,7 +30,6 @@ public class CommandGenerator {
 			} catch (CommandParseException e){
 				throw e;
 			}
-			
 		}
 		throw new CommandParseException(Messages.UNKNOWN_COMMAND.formatted(commandWords[0]));
 	}

@@ -44,10 +44,13 @@ public class AddObjectCommand extends AbstractCommand{
 			view.showGame();
 			//Estos son para errores de parseo o pos
 			// Miro
-		}catch (ObjectParseException | OffBoardException e){
+		}catch (ObjectParseException e){
 			throw new CommandExecuteException(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)), 
                 e);
-		} catch (GameModelException e) {
+			
+		} catch (OffBoardException obe) {
+			throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, obe);
+		}catch (GameModelException e) {
 			//Cualquier otro gameModelException
 			throw new CommandExecuteException(e.getMessage(), e);
 		}

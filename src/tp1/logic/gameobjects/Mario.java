@@ -1,6 +1,8 @@
 package tp1.logic.gameobjects;
 
 
+import tp1.exceptions.CommandParseException;
+import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.ActionList;
 import tp1.logic.GameWorld;
@@ -31,11 +33,16 @@ public class Mario extends MovingObject{
 		this.avanza = Action.RIGHT;
 	}
 	
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws PositionParseException{
 		// comprobacion de mario 
 		if (objWords[1].toLowerCase().equals(this.NAME)|| objWords[1].toLowerCase().equals(this.SHORTCUT)) {
 			// pase Position and check not null
-			Position p = Position.parsePosition(objWords[0]);
+			try {
+				Position p = Position.parsePosition(objWords[0]);
+			} catch (NumberFormatException e) {
+				throw new PositionParseException(e.getMessage(),e);
+			}
+			
 			//if (p == null) return null;
 
 			Mario m = new Mario(game, p);

@@ -1,5 +1,6 @@
 package tp1.logic.gameobjects;
 
+import tp1.exceptions.ObjectParseException;
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -19,31 +20,39 @@ public class Goomba extends MovingObject{
 		this.SHORTCUT = Messages.GOOMBA_SHORTCUT;
 	}
 	
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException {
 		
 		// comprobacion goomba
 		if (objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
-			Position p = Position.parsePosition(objWords[0]);
-			if (p == null) return null;
 			
-			Goomba g = new Goomba(game, p);
-			
-			// direccion goomba
-			if (objWords.length > 2) {
-				// direccion si existe
-				switch (objWords[2].toLowerCase()) {
-				case "right", "r" -> {
-					//&g.avanza = false;
-					g.avanza = Action.RIGHT;
-				}
-				case "left", "l" -> {
-					//g.avanza = true;
-					g.avanza = Action.LEFT;
-				}
-				default -> {return null;}
+			try {
+				Position p = Position.parsePosition(objWords[0]);
+				if (p == null) return null;
+			} catch (NumberFormatException e) {
+				throw new ObjectParseException(Messages.INVALID_POSITION_FORMAT.formatted(objWords[0]), e);
 			}
-			}
-			return g;
+				
+				Goomba g = new Goomba(game, p);
+				
+				// direccion goomba
+				if (objWords.length > 2) {
+					// direccion si existe
+					switch (objWords[2].toLowerCase()) {
+					case "right", "r" -> {
+						//&g.avanza = false;
+						g.avanza = Action.RIGHT;
+					}
+					case "left", "l" -> {
+						//g.avanza = true;
+						g.avanza = Action.LEFT;
+					}
+					default -> {
+						throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
+					}
+				}
+				}
+				return g;
+				
 		}
 		return null;
 		

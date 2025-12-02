@@ -49,6 +49,7 @@ public class Messages {
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
 	public static final String INVALID_GAME_OBJECT = "Invalid game object: %s";
 	public static final String NOAVAIBLE_GAME_OBJECT = "No avaible to create a game object in this position";
+	public static final String INVALID_POSITION_FORMAT = "Invalid position format: %s";
 	// Errores de commandos:
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";

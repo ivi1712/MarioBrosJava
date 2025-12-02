@@ -1,9 +1,15 @@
 package tp1.logic.gameobjects;
 
+import java.text.ParseException;
+
+import tp1.exceptions.GameParseException;
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
 import tp1.logic.Action;
 import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
+import tp1.view.Messages;
 
 public abstract class GameObject implements GameItem { 
 
@@ -49,14 +55,17 @@ public abstract class GameObject implements GameItem {
 		
 		this.pos = this.pos.moved(dir); 
 	}
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException{
 		// addGameObject objectos sencillos esto es para land, exit door, goomba y los nurvos objrtos. todo menos mario
 		// x = 0, y= 1, n or sh = 2
 		// comprobar que es el 
 		if(objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
-			Position p = Position.parsePosition(objWords[0]);
-			if (p == null) return null;
-			return createInstance(game, p);
+			try {
+				Position p = Position.parsePosition(objWords[0]);
+				return createInstance(game, p);
+			} catch (NumberFormatException e) {
+				throw new ObjectParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER); 
+			}
 		}
 		return null;
 	}
