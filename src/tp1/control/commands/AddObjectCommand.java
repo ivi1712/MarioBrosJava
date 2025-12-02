@@ -45,23 +45,17 @@ public class AddObjectCommand extends AbstractCommand{
 			//Estos son para errores de parseo o pos
 			// Miro
 		}catch (ObjectParseException e){
-			throw new CommandExecuteException(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)), 
-                e);
-			
-		} catch (OffBoardException obe) {
-			throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, obe);
-		}catch (GameModelException e) {
-			//Cualquier otro gameModelException
-			throw new CommandExecuteException(e.getMessage(), e);
+			throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, e);
+		} catch (OffBoardException e) {
+			throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, e);
 		}
-		
 	}
 
 	@Override
 	public Command parse(String[] commandWords) throws CommandParseException{
 		
 		// comprobamos longitud y ejeccucion del comando deseado
-		if (commandWords.length >= 3 && (commandWords[0].toLowerCase().equals(this.NAME) || commandWords[0].toLowerCase().equals(this.SHORTCUT))) {
+		if (commandWords.length >= 3 && matchCommandName(commandWords[0])) {
 			// preparar objWords para eliminar el comando
 			// 0 = (x,y), 1 = objeto , 2 = atributo (opc), 3 = atributo (opc)
 			if(commandWords.length >= 3){

@@ -15,5 +15,6 @@ public interface GameWorld {
 	public void doInteractions(GameObject gobj);
 	public void addMario(Mario mario);
 	public void addGameObject(GameObject obj);
+	public boolean offBoard(Position p);
 	
 }

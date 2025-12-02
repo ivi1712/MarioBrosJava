@@ -1,6 +1,9 @@
 package tp1.logic.gameobjects;
 
 import tp1.exceptions.GameParseException;
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
+import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -27,12 +30,18 @@ public class Box extends GameObject {
 		return this.full;
 	}
 	
-	public GameObject parse(String objWords[], GameWorld game) throws GameParseException {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 
 		// comprobacion de mario 
-		if (objWords[1].toLowerCase().equals(this.NAME)|| objWords[1].toLowerCase().equals(this.SHORTCUT)) {
-			Position p = Position.parsePosition(objWords[0]);
-			if (p == null) return null;
+		if (matchName(objWords[1])) {
+			
+			Position p;
+			try {
+				p = Position.parsePosition(objWords[0]);
+			} catch (PositionParseException e) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
+			}
+				
 			// crea instancia de box 
 			Box b = new Box(game, p);
 			

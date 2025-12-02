@@ -1,6 +1,6 @@
 package tp1.logic;
 
-import tp1.exceptions.OffBoardException;
+import tp1.exceptions.PositionParseException;
 import tp1.view.Messages;
 
 public final class Position {
@@ -40,21 +40,16 @@ public final class Position {
 		return "(" + this.col + "," + this.row + ")";
 	}
 	
-	public static Position parsePosition(String parse) throws NumberFormatException{
+	public static Position parsePosition(String parse) throws PositionParseException{
 		if (parse == null) return null;
 		String[] parseList = parse.split(",");
 		parseList[0] = parseList[0].replaceAll("\\(", "");
 		parseList[1] = parseList[1].replaceAll("\\)", "");
-		String valor = null;
 		Position p;
 		try {
-			valor = parseList[0];
-			int x = Integer.parseInt(valor);
-			valor = parseList[1];
-			int y = Integer.parseInt(valor);
-			p = new Position(x, y);
+			p = new Position(Integer.parseInt(parseList[0]), Integer.parseInt(parseList[1]));
 		} catch(NumberFormatException e) {
-			throw new NumberFormatException(String.format("For input string: \"%s\"  ", valor));
+			throw new PositionParseException(Messages.INVALID_POSITION_FORMAT.formatted(parse), e);
 		}
 		return p;
 	}

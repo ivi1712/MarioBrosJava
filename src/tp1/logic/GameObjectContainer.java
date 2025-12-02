@@ -1,7 +1,5 @@
 package tp1.logic;
 
-import tp1.exceptions.CommandParseException;
-import tp1.exceptions.NoAvaibleCreateException;
 import tp1.logic.gameobjects.*;
 import tp1.view.Messages;
 
@@ -51,9 +49,9 @@ public class GameObjectContainer {
 	}
 
 	
-	public void addObjectFactory(GameObject obj) throws NoAvaibleCreateException{
+	public void addObjectFactory(GameObject obj){
 		for (GameObject gameObject : gameObjects)
-			if(obj.isInPosition(gameObject)) throw new NoAvaibleCreateException(Messages.NOAVAIBLE_GAME_OBJECT);
+			if(obj.isInPosition(gameObject)) return;
 		this.gameObjects.add(obj);
 		//return true;
 	}

@@ -3,6 +3,7 @@ package tp1.control.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import tp1.exceptions.ActionParseException;
 import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.CommandParseException;
 import tp1.logic.Action;
@@ -36,18 +37,27 @@ public class ActionCommand extends AbstractCommand{
 	
 	@Override
 	public Command parse(String[] words) throws CommandParseException{
-		if(words.length >= 2 && 
-				(words[0].toLowerCase().equalsIgnoreCase(ActionCommand.SHORTCUT) || words[0].toLowerCase().equalsIgnoreCase(ActionCommand.SHORTCUT))) {
+		if(matchCommandName(words[0])) {
+			
+			if (words.length < 2) {
+	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	        }
 			
 			ActionCommand cmd = new ActionCommand();
 			
 			//Procesamos cada accion
 			for(int i = 1; i<words.length; i++) {
-				Action dir = Action.parseAction(words[i].toLowerCase());
-				if(dir == null) return null;
-				else cmd.actions.add(dir);
-				
+				try {
+					Action dir = Action.parseAction(words[i].toLowerCase());
+					cmd.actions.add(dir);
+				} catch (ActionParseException e) {
+					// TODO: handle exception
+				}
 			}//for
+			
+			if (cmd.actions.isEmpty()) {
+	            throw new CommandParseException(Messages.ACTION_COMMAND_EMPTY);
+	        }
 			return cmd; //Devuelve el comando con las acciones cargadas
 		}
 		return null;

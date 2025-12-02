@@ -6,6 +6,7 @@ import java.util.List;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.logic.GameWorld;
+import tp1.view.Messages;
 
 public class GameObjectFactory {
 
@@ -20,10 +21,12 @@ public class GameObjectFactory {
 			new MushRoom()
 	);
 	public static GameObject parse (String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
+		GameObject parsed = null;
 		for (GameObject c: availableObjects) {
-			GameObject parsed = c.parse(objWords, game);
+			parsed = c.parse(objWords, game);
 			if(parsed != null) return parsed;
 		}
+		if (parsed == null) throw new ObjectParseException(Messages.COMMAND_ADDOBJECT_DETAILS);
 		
 		return null;
 		

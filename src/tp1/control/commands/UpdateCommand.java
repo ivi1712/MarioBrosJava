@@ -35,8 +35,6 @@ public class UpdateCommand extends NoParamsCommand {
                 throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
             }
 			return this;
-		}else{
-			System.out.println(commandWords[0]);
 		}
 		
 		return null;

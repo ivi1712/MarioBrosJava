@@ -4,7 +4,7 @@ import tp1.util.MyStringUtils;
 
 public class Messages {
 	
-	public static final String VERSION = "2.X";
+	public static final String VERSION = "3.0";
 
 	public static final String GAME_NAME = "MarioBross";
 
@@ -48,8 +48,13 @@ public class Messages {
 	// Errores de factorías:
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
 	public static final String INVALID_GAME_OBJECT = "Invalid game object: %s";
+	public static final String INVALID_GAME_OBJECT_POSITION = "Invalid object position: %s";
 	public static final String NOAVAIBLE_GAME_OBJECT = "No avaible to create a game object in this position";
-	public static final String INVALID_POSITION_FORMAT = "Invalid position format: %s";
+	public static final String INVALID_POSITION_FORMAT = "Invalid position: %s";
+	public static final String INVALID_GAME_OBJECT_POSITION_OFFBOARD = "Object position is off board: %s";
+	public static final String INVALID_GAME_OBJECT_EXTRA_ARGS = "Object parse error, too much args: %s";
+	public static final String INVALID_GAME_OBJECT_DIRECTION = "Unknown moving object direction: %s";
+	public static final String INVALID_MARIO_SIZE = "Invalid Mario size: %s";
 	// Errores de commandos:
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
@@ -58,6 +63,7 @@ public class Messages {
 	public static final String INVALID_COMMAND = "Invalid command: %s";
 	public static final String INVALID_COMMAND_PARAMETERS = "Invalid command parameters";
 	public static final String ERROR_COMMAND_EXECUTE = "Command execute problem";
+	public static final String ACTION_COMMAND_EMPTY = "Incorrect 'action command', because the action list is empty (all actions are unknown).";
 
 	
 	public static final String HELP_AVAILABLE_COMMANDS = "Available commands:";

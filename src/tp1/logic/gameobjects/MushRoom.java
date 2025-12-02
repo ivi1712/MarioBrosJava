@@ -1,5 +1,8 @@
 package tp1.logic.gameobjects;
 
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
+import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -60,12 +63,16 @@ public class MushRoom extends MovingObject {
 		return new MushRoom(game, pos);
 	}
 	
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 		
 		// comprobacion goomba
 		if (objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
-			Position p = Position.parsePosition(objWords[0]);
-			if (p == null) return null;
+			Position p;
+			try {
+				p = Position.parsePosition(objWords[0]);
+			} catch (PositionParseException e) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
+			}
 			MushRoom m = new MushRoom(game,p);
 			
 			// direccion goomba
@@ -79,7 +86,9 @@ public class MushRoom extends MovingObject {
 				case "left", "l" -> {
 					m.avanza = Action.LEFT;
 				}
-				default -> {return null;}
+				default -> {
+					throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
+				}
 				}	
 			}
 			return m;

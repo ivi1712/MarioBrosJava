@@ -38,9 +38,10 @@ public class ResetCommand extends AbstractCommand {
     
     @Override
     public Command parse(String[] words) throws CommandParseException {
-    	if(words.length >= 1 && 
-    			(words[0].equalsIgnoreCase(this.NAME) || 
-    					(words[0].equalsIgnoreCase(this.SHORTCUT)))) {
+    	if(words.length >= 1 && matchCommandName(words[0])
+    			//(words[0].equalsIgnoreCase(this.NAME) || 
+    					//(words[0].equalsIgnoreCase(this.SHORTCUT)))
+    			) {
     		
     		ResetCommand cmd = new ResetCommand();
     		

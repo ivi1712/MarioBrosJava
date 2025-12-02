@@ -1,9 +1,5 @@
 package tp1.logic;
 
-
-
-import tp1.exceptions.GameModelException;
-import tp1.exceptions.NoAvaibleCreateException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.logic.gameobjects.*;
@@ -44,18 +40,11 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		nm = nm.parse(objWords, this);
 		if (nm != null) {
 			//if(!gameObjects.addObjectFactory(nm)) return false;
-			try {
 				gameObjects.addObjectFactory(nm);
 				nm.addMarioGame();
-			}
-		
-		try {
+		}
 			GameObject gameobject = GameObjectFactory.parse(objWords, this);
 			gameObjects.addObjectFactory(gameobject);
-		} catch (Exception e) {
-			// TODO: handle exception
-			
-		}
 	}
 	
 	public void addMario(Mario m) {
@@ -364,9 +353,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	public boolean offBoard(Position p) {
-		return p.isRoof(p) || p.isLateral(p);
+	    // Comprueba si se sale por los lados, por el techo o por el suelo (vacío)
+	    return p.isLateral(p) || p.isRoof(p) || p.isVacio(p);
 	}
 	
 }

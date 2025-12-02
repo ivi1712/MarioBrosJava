@@ -28,7 +28,7 @@ public class CommandGenerator {
 				parsed = c.parse(commandWords);
 				if(parsed != null) return parsed;
 			} catch (CommandParseException e){
-				throw e;
+				
 			}
 		}
 		throw new CommandParseException(Messages.UNKNOWN_COMMAND.formatted(commandWords[0]));
