@@ -1,8 +1,11 @@
 package tp1.logic.gameobjects;
 
 import tp1.exceptions.ObjectParseException;
+<<<<<<< HEAD
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
+=======
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -22,6 +25,7 @@ public class Goomba extends MovingObject{
 		this.SHORTCUT = Messages.GOOMBA_SHORTCUT;
 	}
 	
+<<<<<<< HEAD
 	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 		
 		// comprobacion goomba
@@ -32,6 +36,18 @@ public class Goomba extends MovingObject{
 				p = Position.parsePosition(objWords[0]);
 			} catch (PositionParseException e) {
 				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
+=======
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException {
+		
+		// comprobacion goomba
+		if (objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
+			
+			try {
+				Position p = Position.parsePosition(objWords[0]);
+				if (p == null) return null;
+			} catch (NumberFormatException e) {
+				throw new ObjectParseException(Messages.INVALID_POSITION_FORMAT.formatted(objWords[0]), e);
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 			}
 				
 				Goomba g = new Goomba(game, p);

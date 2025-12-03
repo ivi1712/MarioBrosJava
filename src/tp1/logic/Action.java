@@ -26,7 +26,11 @@ public enum Action {
 		return y;
 	}
 	
+<<<<<<< HEAD
 	public static Action parseAction(String word) throws ActionParseException{
+=======
+	public static Action parseAction(String word) {
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 		// direccion si existe
 		switch (word.toLowerCase()) {
 		case "right", "r" -> {
@@ -45,10 +49,14 @@ public enum Action {
 			return DOWN;
 		}
 		default -> {
+<<<<<<< HEAD
 			//Aqui se coje el error de ActionCommand
 			throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(word));
 			}
 		}
+=======
+			return null;}}
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 	
 	public static Action oposite(Action dir) {

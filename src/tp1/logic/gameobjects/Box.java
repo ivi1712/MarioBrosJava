@@ -1,9 +1,12 @@
 package tp1.logic.gameobjects;
 
 import tp1.exceptions.GameParseException;
+<<<<<<< HEAD
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
+=======
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -30,6 +33,7 @@ public class Box extends GameObject {
 		return this.full;
 	}
 	
+<<<<<<< HEAD
 	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 
 		// comprobacion de mario 
@@ -45,6 +49,17 @@ public class Box extends GameObject {
 			// crea instancia de box 
 			Box b = new Box(game, p);
 			
+=======
+	public GameObject parse(String objWords[], GameWorld game) throws GameParseException {
+
+		// comprobacion de mario 
+		if (objWords[1].toLowerCase().equals(this.NAME)|| objWords[1].toLowerCase().equals(this.SHORTCUT)) {
+			Position p = Position.parsePosition(objWords[0]);
+			if (p == null) return null;
+			// crea instancia de box 
+			Box b = new Box(game, p);
+			
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 			// diferencia entre full y empty
 			if (objWords.length > 3) {
 				switch (objWords[3]) {

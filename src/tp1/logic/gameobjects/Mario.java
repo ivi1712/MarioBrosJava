@@ -1,9 +1,13 @@
 package tp1.logic.gameobjects;
 
 
+<<<<<<< HEAD
 import tp1.exceptions.ActionParseException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
+=======
+import tp1.exceptions.CommandParseException;
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.ActionList;
@@ -14,6 +18,12 @@ import tp1.logic.Position;
 public class Mario extends MovingObject{
 	
 	private boolean big = true;
+<<<<<<< HEAD
+=======
+	//private boolean right = true;
+	//private boolean left = false;
+	//private boolean stop = false;
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	private boolean cayendo = false;
 	private boolean downstop = false;
 	private ActionList actlist;	
@@ -32,6 +42,7 @@ public class Mario extends MovingObject{
 		this.avanza = Action.RIGHT;
 	}
 	
+<<<<<<< HEAD
 	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
 		// comprobacion de mario 
 		if (matchName(objWords[1])) {
@@ -59,25 +70,68 @@ public class Mario extends MovingObject{
 				} catch (ActionParseException e) {
 					// TODO: handle exception
 					throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
+=======
+	public GameObject parse(String objWords[], GameWorld game) throws PositionParseException{
+		// comprobacion de mario 
+		if (objWords[1].toLowerCase().equals(this.NAME)|| objWords[1].toLowerCase().equals(this.SHORTCUT)) {
+			// pase Position and check not null
+			try {
+				Position p = Position.parsePosition(objWords[0]);
+			} catch (NumberFormatException e) {
+				throw new PositionParseException(e.getMessage(),e);
+			}
+			
+			//if (p == null) return null;
+
+			Mario m = new Mario(game, p);
+			if (objWords.length >2) {
+				Action act = Action.parseAction(objWords[2]);
+				if(act != null) {
+					m.lookDirection(act, false);
+				}else {
+					return null;
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 				}
 			}
 			
 			// parse tamaño
 			if(objWords.length > 3) {
 				// small or big si existe
+<<<<<<< HEAD
 				//m.big = stringtoBig(objWords[3].toLowerCase());
 				switch (objWords[3].toLowerCase()) {
                 case "big", "b" ->  m.big = true;
                 case "left", "l"-> m.big = false;
                 default -> {throw new ObjectParseException(Messages.INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));} 
 				}
+=======
+				m.big = stringtoBig(objWords[3].toLowerCase());
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 			}
 			
 			return m;
 		}
 		return null;
 	}
+<<<<<<< HEAD
 
+=======
+	
+	private boolean stringtoBig(String s) {
+		switch (s.toLowerCase()) {
+		case "big", "b" -> {
+			return true;
+		}
+		case "small", "s" -> {
+			return false;
+		}
+		default -> {
+			return false; // a la espera de las excepciones
+		}
+		}
+	}
+	
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	@Override
 	protected GameObject createInstance(GameWorld game, Position pos) {
 		
@@ -140,7 +194,11 @@ public class Mario extends MovingObject{
 		}else if (dir == Action.STOP) {
 			//this.stop = true;
 			this.downstop = true;
+<<<<<<< HEAD
 			this.avanza = dir;
+=======
+			this.avanza = Action.STOP;
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 		} else {
 			this.avanza = dir;
 			this.downstop = false;
