@@ -1,5 +1,12 @@
 package tp1.logic;
 
+<<<<<<< HEAD
+=======
+
+
+import tp1.exceptions.GameModelException;
+import tp1.exceptions.NoAvaibleCreateException;
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.logic.gameobjects.*;
@@ -36,15 +43,45 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	
 	public void parseGameObjectFactory(String objWords[]) throws OffBoardException, ObjectParseException {
 		// intentamos crear Mario
+<<<<<<< HEAD
+		
+		//Nuevo gameObject -> Mario
+		GameObject nm = new Mario();
+		
+		//Parseamos el Mario
+		nm = nm.parse(objWords, this);
+		if(nm != null) {
+			//Nuevo Mario añadido al jeugo y a la factoría
+			gameObjects.addObjectFactory(nm);
+			nm.addMarioGame();
+		}
+		
+		
+		//Resto de objetos que no son 
+		GameObject gameobject = GameObjectFactory.parse(objWords, this);
+		if(gameobject == null)
+			throw new ObjectParseException(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)));
+		
+		
+			gameObjects.addObjectFactory(gameobject);
+=======
 		GameObject nm = new Mario();
 		nm = nm.parse(objWords, this);
 		if (nm != null) {
 			//if(!gameObjects.addObjectFactory(nm)) return false;
+			try {
 				gameObjects.addObjectFactory(nm);
 				nm.addMarioGame();
-		}
+			}
+		
+		try {
 			GameObject gameobject = GameObjectFactory.parse(objWords, this);
 			gameObjects.addObjectFactory(gameobject);
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+		}
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 	
 	public void addMario(Mario m) {
@@ -353,9 +390,15 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		// TODO Auto-generated method stub
 		return false;
 	}
+<<<<<<< HEAD
 	public boolean offBoard(Position p) {
 	    // Comprueba si se sale por los lados, por el techo o por el suelo (vacío)
 	    return p.isLateral(p) || p.isRoof(p) || p.isVacio(p);
+=======
+
+	public boolean offBoard(Position p) {
+		return p.isRoof(p) || p.isLateral(p);
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 	
 }

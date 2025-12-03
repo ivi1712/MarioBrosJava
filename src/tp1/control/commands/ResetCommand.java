@@ -27,8 +27,11 @@ public class ResetCommand extends AbstractCommand {
     		view.showGame();
     	}else {
     		game.resetStats();
+    		//Si reset falla el nivel no existe
     		if(!game.reset(level)) {
-    			view.showError(Messages.INVALID_LEVEL_NUMBER);
+    			//En vez de enviar esto: view.showError(Messages.INVALID_LEVEL_NUMBER);
+    			//Ahora enviamos esto
+    			throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);   			
     		}else {
     			view.showGame();
     		}
@@ -38,10 +41,16 @@ public class ResetCommand extends AbstractCommand {
     
     @Override
     public Command parse(String[] words) throws CommandParseException {
-    	if(words.length >= 1 && matchCommandName(words[0])
-    			//(words[0].equalsIgnoreCase(this.NAME) || 
-    					//(words[0].equalsIgnoreCase(this.SHORTCUT)))
-    			) {
+<<<<<<< HEAD
+    	
+    	//Comprobamos si coinciden
+    	if(matchCommandName(words[0]))    {
+    		if(words.length > 2) {
+    			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+=======
+    	if(words.length >= 1 && 
+    			(words[0].equalsIgnoreCase(this.NAME) || 
+    					(words[0].equalsIgnoreCase(this.SHORTCUT)))) {
     		
     		ResetCommand cmd = new ResetCommand();
     		
@@ -64,10 +73,29 @@ public class ResetCommand extends AbstractCommand {
                  	throw new CommandParseException(Messages.LEVEL_NOT_A_NUMBER_ERROR.formatted(words[1]), nfe);
                 }
                
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
     		}
-    		return cmd;
+        		
+    		//Creamos el comando
+    		// Como ya hemos comprobado arriba que la palabra no puede ser mayor que 2
+    		// No hace falta lo que teniamos antes de words.length >= 1
+        		ResetCommand cmd = new ResetCommand();
+        		
+        		//Hay argumentos:
+        		//  - Si: Cambiamos de nivel
+        		if(words.length == 2) {
+        		   // 3. Si llegamos aquí, es seguro convertirlo
+                    try {
+                    	 cmd.level = Integer.parseInt(words[1]);
+                    } catch(NumberFormatException nfe){
+                     	throw new CommandParseException(Messages.LEVEL_NOT_A_NUMBER_ERROR.formatted(words[1]), nfe);
+                    }
+        		}
+        		return cmd;
+        	
     	}
     	
+    	//Nombre no coincide
     	return null;
     }
 }

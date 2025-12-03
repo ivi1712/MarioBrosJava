@@ -24,13 +24,23 @@ public class CommandGenerator {
 		
 		Command parsed = null;
 		for (Command c: AVAILABLE_COMMANDS) {
+<<<<<<< HEAD
+			// Si c.parse lanza la excepciones, se manda auto al controller
+			// No hcae falta hacer un try cacth con la causa de la accion porque
+			// Ya nos la da el comando
+				parsed = c.parse(commandWords);
+				if(parsed != null) return parsed;
+		}
+		//No ha coincidido con ningún comando de lso que se ha mandado
+=======
 			try{
 				parsed = c.parse(commandWords);
 				if(parsed != null) return parsed;
 			} catch (CommandParseException e){
-				
+				throw e;
 			}
 		}
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 		throw new CommandParseException(Messages.UNKNOWN_COMMAND.formatted(commandWords[0]));
 	}
 		

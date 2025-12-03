@@ -18,6 +18,30 @@ public class UpdateCommand extends NoParamsCommand {
 
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException{
+<<<<<<< HEAD
+    	//Su error es mandado por AbstractCommand, lo mismo pasa en Help
+			game.update();
+        	view.showGame();
+    }
+
+    
+    @Override
+    public Command parse(String[] commandWords) throws CommandParseException{
+    	//Su error es mandado por NoParamsCommand, lo mismo pasa en Help
+		if (commandWords.length == 1 && (matchCommandName(commandWords[0])|| commandWords[0].equals(""))) {
+			return this;
+		}
+		
+		// 2. Caso normal: El usuario escribe "update" o "u".
+				// Delegamos en la clase padre (NoParamsCommand).
+				// Ella se encarga de:
+				//    a) Ver si el nombre coincide.
+				//    b) Si coincide pero hay argumentos extra -> Lanza CommandParseException (Lo que te falta ahora)
+				//    c) Si coincide y no hay argumentos -> Devuelve this.
+				//    d) Si no coincide -> Devuelve null.
+		// Si no pongo esto hay un fallo en la linea 41
+		return super.parse(commandWords);
+=======
 		try {
 			game.update();
         	view.showGame();
@@ -35,8 +59,11 @@ public class UpdateCommand extends NoParamsCommand {
                 throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
             }
 			return this;
+		}else{
+			System.out.println(commandWords[0]);
 		}
 		
 		return null;
+>>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 }
