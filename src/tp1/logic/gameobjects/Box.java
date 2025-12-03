@@ -45,9 +45,13 @@ public class Box extends GameObject {
 			// crea instancia de box 
 			Box b = new Box(game, p);
 			
-			// diferencia entre full y empty
 			if (objWords.length > 3) {
-				switch (objWords[3]) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_EXTRA_ARGS.formatted(String.join(" ", objWords)));
+			}
+			
+			// diferencia entre full y empty
+			if (objWords.length > 2) {
+				switch (objWords[2]) {
 				case "full", "f" -> {
 					b.full = true;
 				}
@@ -55,8 +59,7 @@ public class Box extends GameObject {
 					b.full = false;
 				}
 				default -> {
-					// falta excepcion, error empty/full
-					return null;
+					throw new ObjectParseException(Messages.INVALID_BOX_STATUS.formatted(String.join(" ", objWords)));
 				}
 				}
 			}

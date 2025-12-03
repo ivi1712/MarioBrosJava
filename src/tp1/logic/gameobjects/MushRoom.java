@@ -1,5 +1,6 @@
 package tp1.logic.gameobjects;
 
+import tp1.exceptions.ActionParseException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
@@ -78,19 +79,16 @@ public class MushRoom extends MovingObject {
 			// direccion goomba
 			if (objWords.length > 2) {
 				// direccion si existe
-				switch (objWords[2].toLowerCase()) {
-				case "right", "r" -> {
-					//m.avanza = false;
-					m.avanza = Action.RIGHT;
+				try {
+					Action dir = Action.parseAction(objWords[2]);
+					if (dir == Action.RIGHT  || dir == Action.LEFT) m.avanza = dir;
+					else throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)));
+				}catch (ActionParseException e) {
+					throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)), e);
 				}
-				case "left", "l" -> {
-					m.avanza = Action.LEFT;
-				}
-				default -> {
-					throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
-				}
-				}	
 			}
+			
+			
 			return m;
 			
 		}

@@ -47,15 +47,19 @@ public class Messages {
 //Commands
 	// Errores de factorías:
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
-	public static final String INVALID_GAME_OBJECT = "Invalid game object: %s";
-	public static final String INVALID_GAME_OBJECT_POSITION = "Invalid object position: %s";
+	public static final String INVALID_GAME_OBJECT = "Invalid game object: \"%s\"";
+	public static final String UNKNOWN_GAME_OBJECT = "Unknown game object: \"%s\"";
+	public static final String INVALID_GAME_OBJECT_POSITION = "Invalid object position: \"%s\"";
 	public static final String NOAVAIBLE_GAME_OBJECT = "No avaible to create a game object in this position";
-	public static final String INVALID_POSITION_FORMAT = "Invalid position: %s";
-	public static final String INVALID_GAME_OBJECT_POSITION_OFFBOARD = "Object position is off board: %s";
-	public static final String INVALID_GAME_OBJECT_EXTRA_ARGS = "Object parse error, too much args: %s";
-	public static final String INVALID_GAME_OBJECT_DIRECTION = "Unknown moving object direction: %s";
-	public static final String INVALID_MARIO_SIZE = "Invalid Mario size: %s";
-	// Errores de commandos:
+	public static final String INVALID_POSITION_FORMAT = "Invalid position: \"%s\"";
+	public static final String INVALID_GAME_OBJECT_POSITION_OFFBOARD = "Object position is off board: \"%s\"";
+	public static final String INVALID_GAME_OBJECT_EXTRA_ARGS = "Object parse error, too much args: \"%s\"";
+	public static final String UNKNOWN_GAME_OBJECT_DIRECTION = "Unknown moving object direction: \"%s\"";
+	public static final String INVALID_GAME_OBJECT_DIRECTION = "Invalid moving object direction: \"%s\"";
+	public static final String INVALID_MARIO_SIZE = "Invalid Mario size: \"%s\"";
+	public static final String INVALID_BOX_STATUS = " Invalid Box status: \"%s\"";
+
+	// Errores de commandos: "%s"
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
 	public static final String UNKNOWN_ACTION = "Unknown action: \"%s\"";

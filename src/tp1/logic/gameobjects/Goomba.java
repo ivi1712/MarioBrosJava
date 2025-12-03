@@ -1,5 +1,6 @@
 package tp1.logic.gameobjects;
 
+import tp1.exceptions.ActionParseException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
@@ -22,7 +23,6 @@ public class Goomba extends MovingObject{
 		this.SHORTCUT = Messages.GOOMBA_SHORTCUT;
 	}
 	
-<<<<<<< HEAD
 	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 		
 		// comprobacion goomba
@@ -33,18 +33,14 @@ public class Goomba extends MovingObject{
 				p = Position.parsePosition(objWords[0]);
 			} catch (PositionParseException e) {
 				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
-=======
-	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException {
-		
-		// comprobacion goomba
-		if (objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
+			}
 			
-			try {
-				Position p = Position.parsePosition(objWords[0]);
-				if (p == null) return null;
-			} catch (NumberFormatException e) {
-				throw new ObjectParseException(Messages.INVALID_POSITION_FORMAT.formatted(objWords[0]), e);
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
+			if (game.offBoard(p)) {
+	            throw new OffBoardException(Messages.INVALID_GAME_OBJECT_POSITION_OFFBOARD.formatted(String.join(" ", objWords)));
+	        }
+			
+			if (objWords.length > 3) { // demasiados argumentos
+	            throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_EXTRA_ARGS.formatted(String.join(" ", objWords)));
 			}
 				
 				Goomba g = new Goomba(game, p);
@@ -52,22 +48,16 @@ public class Goomba extends MovingObject{
 				// direccion goomba
 				if (objWords.length > 2) {
 					// direccion si existe
-					switch (objWords[2].toLowerCase()) {
-					case "right", "r" -> {
-						//&g.avanza = false;
-						g.avanza = Action.RIGHT;
-					}
-					case "left", "l" -> {
-						//g.avanza = true;
-						g.avanza = Action.LEFT;
-					}
-					default -> {
-						throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
+					try {
+						Action dir = Action.parseAction(objWords[2]);
+						if (dir == Action.RIGHT  || dir == Action.LEFT) g.avanza = dir;
+						else throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)));
+					}catch (ActionParseException e) {
+						throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)), e);
 					}
 				}
-				}
+				//System.out.println("retorna goomba");
 				return g;
-				
 		}
 		return null;
 		

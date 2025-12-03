@@ -66,7 +66,7 @@ public abstract class GameObject implements GameItem {
 				p = Position.parsePosition(objWords[0]);
 				
 				if(p.isLateral(p)|| p.isVacio(p) || p.isRoof(p))
-					throw new OffBoardException(Messages.INVALID_POSITION_FORMAT.formatted(String.join(" ", objWords)));
+					throw new OffBoardException(Messages.INVALID_GAME_OBJECT_POSITION_OFFBOARD.formatted(String.join(" ", objWords)));
 				
 			} catch (PositionParseException e) {
 				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
@@ -135,11 +135,7 @@ public abstract class GameObject implements GameItem {
 	public void add(GameObjectContainer gameObjects) {
 		gameObjects.add(this);
 	}
-<<<<<<< HEAD
 	public boolean matchName(String s) {
 		return s.toLowerCase().equals(this.NAME)|| s.toLowerCase().equals(this.SHORTCUT);
 	}
-=======
-	
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 }

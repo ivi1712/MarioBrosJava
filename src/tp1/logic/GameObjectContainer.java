@@ -53,7 +53,7 @@ public class GameObjectContainer {
 	
 	public void addObjectFactory(GameObject obj){
 		for (GameObject gameObject : gameObjects)
-			if(obj.isInPosition(gameObject)) return;
+			if(obj.isInPosition(gameObject) && obj.isSolid()) return;
 		this.gameObjects.add(obj);
 		//return true;
 	}

@@ -26,7 +26,7 @@ public class GameObjectFactory {
 			parsed = c.parse(objWords, game);
 			if(parsed != null) return parsed;
 		}
-		if (parsed == null) throw new ObjectParseException(Messages.COMMAND_ADDOBJECT_DETAILS);
+		if (parsed == null) throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT.formatted(String.join(" ", objWords)));
 		
 		return null;
 		

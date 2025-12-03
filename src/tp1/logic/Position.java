@@ -1,10 +1,6 @@
 package tp1.logic;
 
-<<<<<<< HEAD
 import tp1.exceptions.PositionParseException;
-=======
-import tp1.exceptions.OffBoardException;
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.view.Messages;
 
 public final class Position {
