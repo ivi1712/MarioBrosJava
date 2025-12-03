@@ -5,10 +5,7 @@ import java.text.ParseException;
 import tp1.exceptions.GameParseException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
-<<<<<<< HEAD
 import tp1.exceptions.PositionParseException;
-=======
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.logic.Action;
 import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
@@ -59,7 +56,6 @@ public abstract class GameObject implements GameItem {
 		
 		this.pos = this.pos.moved(dir); 
 	}
-<<<<<<< HEAD
 	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
 		// addGameObject objectos sencillos esto es para land, exit door, goomba y los nurvos objrtos. todo menos mario
 		// x = 0, y= 1, n or sh = 2
@@ -82,19 +78,6 @@ public abstract class GameObject implements GameItem {
 			
 			return createInstance(game, p);
 			
-=======
-	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException{
-		// addGameObject objectos sencillos esto es para land, exit door, goomba y los nurvos objrtos. todo menos mario
-		// x = 0, y= 1, n or sh = 2
-		// comprobar que es el 
-		if(objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
-			try {
-				Position p = Position.parsePosition(objWords[0]);
-				return createInstance(game, p);
-			} catch (NumberFormatException e) {
-				throw new ObjectParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER); 
-			}
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 		}
 		return null;
 	}

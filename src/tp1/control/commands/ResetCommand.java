@@ -41,39 +41,11 @@ public class ResetCommand extends AbstractCommand {
     
     @Override
     public Command parse(String[] words) throws CommandParseException {
-<<<<<<< HEAD
     	
     	//Comprobamos si coinciden
     	if(matchCommandName(words[0]))    {
     		if(words.length > 2) {
     			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
-=======
-    	if(words.length >= 1 && 
-    			(words[0].equalsIgnoreCase(this.NAME) || 
-    					(words[0].equalsIgnoreCase(this.SHORTCUT)))) {
-    		
-    		ResetCommand cmd = new ResetCommand();
-    		
-    		if(words.length > 1) {
-    			String arg = words[1];
-                
-                // comprobar si es -
-                int i = 0;
-                if (arg.charAt(0) == '-') {
-                    // Si es solo un "-", no es un número válido
-                    if (arg.length() == 1) return null; 
-                    // Empezamos a mirar dígitos a partir del siguiente carácter
-                    i = 1; 
-                }
-                
-                // 3. Si llegamos aquí, es seguro convertirlo
-                try {
-                	 cmd.level = Integer.parseInt(arg);
-                } catch(NumberFormatException nfe){
-                 	throw new CommandParseException(Messages.LEVEL_NOT_A_NUMBER_ERROR.formatted(words[1]), nfe);
-                }
-               
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
     		}
         		
     		//Creamos el comando

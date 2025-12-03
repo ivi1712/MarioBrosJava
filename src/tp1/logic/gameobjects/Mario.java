@@ -18,12 +18,6 @@ import tp1.logic.Position;
 public class Mario extends MovingObject{
 	
 	private boolean big = true;
-<<<<<<< HEAD
-=======
-	//private boolean right = true;
-	//private boolean left = false;
-	//private boolean stop = false;
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	private boolean cayendo = false;
 	private boolean downstop = false;
 	private ActionList actlist;	

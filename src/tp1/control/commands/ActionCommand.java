@@ -3,10 +3,8 @@ package tp1.control.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
+
 import tp1.exceptions.ActionParseException;
-=======
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.CommandParseException;
 import tp1.logic.Action;
@@ -40,22 +38,16 @@ public class ActionCommand extends AbstractCommand{
 	
 	@Override
 	public Command parse(String[] words) throws CommandParseException{
-<<<<<<< HEAD
 		if(matchCommandName(words[0])) {
 			
 			if (words.length < 2) {
 	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	        }
-=======
-		if(words.length >= 2 && 
-				(words[0].toLowerCase().equalsIgnoreCase(ActionCommand.SHORTCUT) || words[0].toLowerCase().equalsIgnoreCase(ActionCommand.SHORTCUT))) {
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 			
 			ActionCommand cmd = new ActionCommand();
 			
 			//Procesamos cada accion
 			for(int i = 1; i<words.length; i++) {
-<<<<<<< HEAD
 				try {
 					Action dir = Action.parseAction(words[i].toLowerCase());
 					cmd.actions.add(dir);
@@ -73,13 +65,6 @@ public class ActionCommand extends AbstractCommand{
 			if (cmd.actions.isEmpty()) {
 	            throw new CommandParseException(Messages.ACTION_COMMAND_EMPTY);
 	        }
-=======
-				Action dir = Action.parseAction(words[i].toLowerCase());
-				if(dir == null) return null;
-				else cmd.actions.add(dir);
-				
-			}//for
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 			return cmd; //Devuelve el comando con las acciones cargadas
 		}
 		return null;

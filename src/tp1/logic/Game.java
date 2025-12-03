@@ -390,15 +390,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		// TODO Auto-generated method stub
 		return false;
 	}
-<<<<<<< HEAD
 	public boolean offBoard(Position p) {
 	    // Comprueba si se sale por los lados, por el techo o por el suelo (vacío)
 	    return p.isLateral(p) || p.isRoof(p) || p.isVacio(p);
-=======
-
-	public boolean offBoard(Position p) {
-		return p.isRoof(p) || p.isLateral(p);
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 	
 }

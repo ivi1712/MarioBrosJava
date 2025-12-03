@@ -18,16 +18,8 @@ public class HelpCommand extends NoParamsCommand {
 
 	@Override
 	public void execute(GameModel game, GameView view) throws CommandExecuteException{
-<<<<<<< HEAD
 		//Su error es mandado por AbstractCommand, lo mismo pasa en Help
 			view.showMessage(CommandGenerator.commandHelp());
-=======
-		try {
-			view.showMessage(CommandGenerator.commandHelp());
-		} catch (Exception e) {
-			throw new CommandExecuteException("Excepcion en HELP no identificada", e); 
-		}
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 	
 }

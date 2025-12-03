@@ -21,19 +21,12 @@ public class GameObjectFactory {
 			new MushRoom()
 	);
 	public static GameObject parse (String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
-<<<<<<< HEAD
 		GameObject parsed = null;
 		for (GameObject c: availableObjects) {
 			parsed = c.parse(objWords, game);
 			if(parsed != null) return parsed;
 		}
 		if (parsed == null) throw new ObjectParseException(Messages.COMMAND_ADDOBJECT_DETAILS);
-=======
-		for (GameObject c: availableObjects) {
-			GameObject parsed = c.parse(objWords, game);
-			if(parsed != null) return parsed;
-		}
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 		
 		return null;
 		

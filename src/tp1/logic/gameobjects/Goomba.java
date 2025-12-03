@@ -1,11 +1,8 @@
 package tp1.logic.gameobjects;
 
 import tp1.exceptions.ObjectParseException;
-<<<<<<< HEAD
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
-=======
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;

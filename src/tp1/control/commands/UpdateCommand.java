@@ -18,7 +18,6 @@ public class UpdateCommand extends NoParamsCommand {
 
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException{
-<<<<<<< HEAD
     	//Su error es mandado por AbstractCommand, lo mismo pasa en Help
 			game.update();
         	view.showGame();
@@ -41,29 +40,5 @@ public class UpdateCommand extends NoParamsCommand {
 				//    d) Si no coincide -> Devuelve null.
 		// Si no pongo esto hay un fallo en la linea 41
 		return super.parse(commandWords);
-=======
-		try {
-			game.update();
-        	view.showGame();
-		} catch (Exception e) { 
-			throw new CommandExecuteException("Excepcion en UPDATE  no identificada", e); // que mensaje poner?
-		}
-    }
-
-    
-    @Override
-    public Command parse(String[] commandWords) throws CommandParseException{
-		
-		if (commandWords.length == 1 && (matchCommandName(commandWords[0])|| commandWords[0].equals(""))) {
-			if (commandWords.length > 1) {
-                throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
-            }
-			return this;
-		}else{
-			System.out.println(commandWords[0]);
-		}
-		
-		return null;
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 	}
 }

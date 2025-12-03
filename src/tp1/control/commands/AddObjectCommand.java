@@ -30,33 +30,6 @@ public class AddObjectCommand extends AbstractCommand{
 
 	@Override
 	public void execute(GameModel game, GameView view) throws CommandExecuteException{
-<<<<<<< HEAD
-=======
-		// game - game llama a gamefactory y añade el objeto
-		//System.out.println("exe");
-		/*
-		if(!game.parseGameObjectFactory(objWords)) {
-			view.showError(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)));
-		}else {
-			view.showGame();
-		}
-		*/
-		try {
-			game.parseGameObjectFactory(objWords);
-			view.showGame();
-			//Estos son para errores de parseo o pos
-			// Miro
-		}catch (ObjectParseException e){
-			throw new CommandExecuteException(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)), 
-                e);
-			
-		} catch (OffBoardException obe) {
-			throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, obe);
-		}catch (GameModelException e) {
-			//Cualquier otro gameModelException
-			throw new CommandExecuteException(e.getMessage(), e);
-		}
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 		
 		try {
 			game.parseGameObjectFactory(objWords);
@@ -69,14 +42,9 @@ public class AddObjectCommand extends AbstractCommand{
 	@Override
 	public Command parse(String[] commandWords) throws CommandParseException{
 		
-<<<<<<< HEAD
 		//ejeccucion del comando deseado
 		if (matchCommandName(commandWords[0])) {
 			//Comprobamos aqui la longitud, porque si esta falla tiene que lanzar una excepcion
-=======
-		// comprobamos longitud y ejeccucion del comando deseado
-		if (commandWords.length >= 3 && (commandWords[0].toLowerCase().equals(this.NAME) || commandWords[0].toLowerCase().equals(this.SHORTCUT))) {
->>>>>>> 3ff17d3396b5442e302dc3a3050db3e6f57e4d41
 			// preparar objWords para eliminar el comando
 			// 0 = (x,y), 1 = objeto , 2 = atributo (opc), 3 = atributo (opc)
 			if(commandWords.length >= 3){
