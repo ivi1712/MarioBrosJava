@@ -1,6 +1,10 @@
 package tp1.logic.gameobjects;
 
 
+import tp1.exceptions.ActionParseException;
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
+import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.ActionList;
 import tp1.logic.GameWorld;
@@ -8,94 +12,75 @@ import tp1.view.Messages;
 import tp1.logic.Position;
 
 public class Mario extends MovingObject{
-
-	//TODO fill your code
 	
-	/**
-	 *  Implements the automatic update	
-	 */
-	
-	//private Position pos;
-	//private Game game;
 	private boolean big = true;
-	private boolean right = true;
-	private boolean left = false;
-	private boolean stop = false;
-	//private boolean avanza = false;
 	private boolean cayendo = false;
 	private boolean downstop = false;
-	private boolean alive = true;
-	private Action lastAction;
-	//private String NAME = "mario";
-	//private String SHORTCUT = "m";
+	private ActionList actlist;	
 	
-	
-	private ActionList actlist;
 	public Mario(GameWorld game, Position position) {
-		// TODO Auto-generated constructor stub
-		//this.game = game;
-		//this.pos = position;
 		super(game, position);
 		this.actlist = new ActionList();
-		this.avanza = false;
+		//this.avanza = false;
+		this.avanza = Action.RIGHT;
 	}
 	
 	public Mario() {
 		this.actlist = new ActionList();
 		this.NAME = Messages.MARIO_NAME;
 		this.SHORTCUT = Messages.MARIO_SHORTCUT;
-		this.avanza = false;
+		this.avanza = Action.RIGHT;
 	}
 	
-	
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
 		// comprobacion de mario 
-		if (objWords[2].toLowerCase().equals(this.NAME)|| objWords[2].toLowerCase().equals(this.SHORTCUT)) {
-			Position p = new Position(Integer.parseInt(objWords[0]), Integer.parseInt(objWords[1]));
-			// añadimos el juego
-			// añadimos la posicion 
+		if (matchName(objWords[1])) {
+			// pase Position and check not null
+			Position p;
+			try {
+				p = Position.parsePosition(objWords[0]);
+			} catch (PositionParseException e) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
+			}
+			
+			if (game.offBoard(p)) {
+	            throw new OffBoardException(Messages.INVALID_GAME_OBJECT_POSITION_OFFBOARD.formatted(String.join(" ", objWords)));
+	        }
+			
+			if (objWords.length > 4) {
+	            throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_EXTRA_ARGS.formatted(String.join(" ", objWords)));
+	        }
+
 			Mario m = new Mario(game, p);
-			
-			if (objWords.length > 3) {
-				// direccion si existe
-				switch (objWords[3]) {
-				case "right", "r" -> {
-					m.lookDirection(Action.RIGHT, false);
+			if (objWords.length >2) {
+				try {
+					Action act = Action.parseAction(objWords[2]);
+					m.lookDirection(act, false);
+				} catch (ActionParseException e) {
+					// TODO: handle exception
+					throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
 				}
-				case "left", "l" -> {
-					m.lookDirection(Action.LEFT, false);
-				}
-				case "stop", "s" -> {
-					m.lookDirection(Action.STOP, false);
-				}
-				default -> {
-					return null;}}
-			
 			}
 			
-			if(objWords.length > 4) {
+			// parse tamaño
+			if(objWords.length > 3) {
 				// small or big si existe
-				switch (objWords[4]) {
-				case "big", "b" -> {
-					m.big = true;
-				}
-				case "small", "s" -> {
-					m.big = false;
-				}
-				default -> {
-					return null;}
+				//m.big = stringtoBig(objWords[3].toLowerCase());
+				switch (objWords[3].toLowerCase()) {
+                case "big", "b" ->  m.big = true;
+                case "left", "l"-> m.big = false;
+                default -> {throw new ObjectParseException(Messages.INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));} 
 				}
 			}
+			
 			return m;
 		}
 		return null;
 	}
-	
-	// null / no se usa
-	
+
 	@Override
 	protected GameObject createInstance(GameWorld game, Position pos) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -105,14 +90,15 @@ public class Mario extends MovingObject{
 			if (actlist.anyActions()) {
 				while(actlist.anyActions()) {
 					actionMovement(actlist.nextAction());
-					game.doInteraction(this);
+					game.doInteractions(this);
 				}	
-				this.avanza = false;
+				//this.avanza = false;
+				this.avanza = Action.RIGHT;
 				return;
 			}
 			//automatico big
 			if(!automaticMovement()) {
-				game.doInteraction(this);
+				game.doInteractions(this);
 				return;
 			}		
 	}
@@ -120,12 +106,13 @@ public class Mario extends MovingObject{
 	
 
 	private void actionMovement(Action dir) {
-		if(isNextToLateral(dir) || isNextToSolid(dir)) {
+		if(isNextToLateral(dir) || isNextToSolid(dir) || isNextToRoof(dir)) {
 			if(dir == Action.DOWN) {
-				this.stop = true;
-				this.left = false;
-				this.right = false;
+				//this.stop = true;
+				//this.left = false;
+				//this.right = false;
 				this.downstop = true;
+				this.avanza = Action.STOP;
 				return;
 			}
 			lookDirection(dir, true);
@@ -133,9 +120,7 @@ public class Mario extends MovingObject{
 			if (lookDirection(dir, false)) return;
 			marioMove(dir);
 		}
-		
 	}
-	
 	
 	public void marioMove(Action dir) {
 		this.pos = this.pos.moved(dir);
@@ -148,27 +133,20 @@ public class Mario extends MovingObject{
 			if(dir == Action.RIGHT) dir = Action.LEFT;
 		}
 		
-		if (dir == Action.LEFT) {
-			this.left = true;
-			this.right = false;
-			this.stop = false;
-			this.downstop = false;
-		} else if (dir == Action.RIGHT){
-			this.right = true;
-			this.left = false;
-			this.stop = false;
-			this.downstop = false;
-		} else if (dir == Action.DOWN) {
+		if(dir == Action.DOWN) {
 			Position suelo = this.pos.moved(Action.DOWN);
 			caida(suelo);
 			return true;
-		} else if (dir == Action.STOP) {
-			this.stop = true;
+		}else if (dir == Action.STOP) {
+			//this.stop = true;
 			this.downstop = true;
+			this.avanza = dir;
+		} else {
+			this.avanza = dir;
+			this.downstop = false;
 		}
 		return choque;
 	}
-	
 	
 	
 	public boolean automaticMovement() {
@@ -176,37 +154,40 @@ public class Mario extends MovingObject{
 		if (caidaUnitaria(this.pos.moved(Action.DOWN))) {
 			return false;
 		}
-		Action dir = avanza ? Action.LEFT : Action.RIGHT;
-		if(isNextToLateral(dir) || isNextToSolid(dir)) {
-			avanza = !avanza;
-			leftToRight(avanza);
+		//Action dir = avanza ? Action.LEFT : Action.RIGHT;
+		if(isNextToLateral(this.avanza) || isNextToSolid(this.avanza) || isNextToRoof(this.avanza)) {
+			//avanza = !avanza;
+			leftToRight(this.avanza);
 		} else {
-			movimientoUnitario(avanza, downstop, dir);
+			movimientoUnitario();
 		}
 		return true;
 		
 	}
 	
+	
 	//redirect movimientoUnitario
-	protected void movimientoUnitario(boolean avanza, Action dir) {
-		// TODO Auto-generated method stub
-		movimientoUnitario(avanza, downstop, dir);
+	protected void movimientoUnitario(Action avanza, Action dir) {
+		
+		movimientoUnitario(avanza);
 	}
 	
-	public void movimientoUnitario(boolean avanza, boolean downstop, Action dir) {
+	public void movimientoUnitario() {
 		if(!this.downstop) {
-			this.pos = this.pos.moved(dir);
-			leftToRight(avanza);
-			this.stop = false;
+			this.pos = this.pos.moved(this.avanza);
+			//leftToRight(avanza);
+			//this.stop = false;
 		}
 	}
 	
-	
-	public void leftToRight(boolean avanza) {
-		this.left = avanza;
-		this.right = !avanza;
+	public void leftToRight(Action dir) {
+		this.avanza = Action.oposite(dir);
 	}
 	
+	public boolean isNextToRoof(Action dir) {
+		Position nextPos = this.pos.moved(dir);
+		return nextPos.isRoof(nextPos);
+	}
 	
 	public boolean isNextToLateral(Action dir) {
 		Position lateral = this.pos.moved(dir);
@@ -222,14 +203,11 @@ public class Mario extends MovingObject{
 		boolean solido =game.isSolid(this.pos.moved(dir));
 		if(big) {
 			solido = game.isSolid(this.pos.moved(dir).moved(Action.UP)) || solido;
-			
 		}
 		if(solido && dir == Action.UP) {
-			System.out.println("checkea caja");
 			checkBox(dir);
 		}
 		return solido;
-		
 	}
 	
 	public void checkBox(Action dir) {
@@ -237,47 +215,35 @@ public class Mario extends MovingObject{
 		if(big) {
 			move(dir);
 		}
-		System.out.println("Mario en: " + this.pos.toString() + " para interactuar.");
-		game.doInteraction(this);
-		move(oposite(dir));
+		game.doInteractions(this);
+		move(Action.oposite(dir));
 		if (big) {
-			move(oposite(dir));
+			move(Action.oposite(dir));
 		}
 	}
-	
-	private Action oposite(Action dir) {
-		if(dir == Action.UP) return Action.DOWN;
-		if(dir == Action.DOWN) return Action.UP;
-		if(dir == Action.RIGHT) return Action.LEFT;
-		if(dir == Action.LEFT) return Action.RIGHT;
-		else return dir;
-	}
-	
 	
 	public String getIcon() {
 		// devuelve el icono, segun su direccion
-		
-		if (this.stop) {
+		if (avanza == Action.STOP) {
 			return Messages.MARIO_STOP; 
-		} else if (this.right) {
+		} else if (avanza == Action.RIGHT) {
 			return Messages.MARIO_RIGHT;
-		} else if (this.left) {
+		} else if (avanza == Action.LEFT) {
 			return Messages.MARIO_LEFT;
+		} else if (avanza == Action.DOWN) {
+			return Messages.MARIO_STOP;
 		}
-		//System.out.println("Eror direccion Mario");
-		
 		return Messages.MARIO_STOP;
 	}
 	
 	public String toString() {
-		// devuelve una representación de Mario, ej: Mario grande situado en la posicion (1,2), parado
-		return null;
-		
+		return "Mario [pos=" + pos + ", big=" + big + 
+				", avanza=" + avanza + ", cayendo=" 
+				+ cayendo + "]";
 	}
 	
 	public boolean isInPosition (Position p) {
 		if (this.big) {
-			//System.out.println("esta big");
 			Position pb = this.pos;
 			pb = pb.moved(Action.UP);
 			return (this.pos.equals(p)|| pb.equals(p));
@@ -298,29 +264,14 @@ public class Mario extends MovingObject{
 		this.actlist.add(act);
 	}
 	
-	public void restringirLista() {
-		//System.out.println("restringiendo lista");
-		this.actlist.restringirLista();
-	}
-	
 	public boolean caida(Position suelo) {
 		//caida infinita
-		 if (game.isSolid(suelo)) {
-			 
-			 return false;
+		 while (caidaUnitaria(suelo)) {
+			 if (this.pos.isVacio(this.pos)) {
+		            return true;
+		        }
+			 suelo = this.pos.moved(Action.DOWN);
 		 }
-		 while (!game.isSolid(suelo)) {
-		        if (this.pos.isVacio(suelo)) { 
-		        	game.marioDead();                      
-			        suelo = suelo.moved(Action.DOWN);
-			        this.pos =suelo;
-			        return true; 
-			        		}
-		        this.pos = suelo;                        // baja 1
-		        suelo = suelo.moved(Action.DOWN);     // recalcula
-		    }
-		 //this.pos = this.pos.moved(Action.UP);
-		this.cayendo = true;
 		return false;
 		
 	}
@@ -329,33 +280,31 @@ public class Mario extends MovingObject{
 		if (game.isSolid(suelo)) return false; 
 		if(!game.isSolid(suelo)) {
 			if (suelo.isVacio(suelo)) {
-				//System.out.println("vaciooooo");
-				//game.marioDead();
+				this.pos = suelo;
 				game.marioDead();
 				return true;
 			}
 			this.pos = suelo;
 			this.cayendo = true;
+			game.doInteractions(this);
 			return true;
 		}
-		//this.cayendo = true;
 		return false;
 	}
 	
 	@Override
 	public boolean receiveInteraction(ExitDoor other) {
-		wins();
+		game.marioExited();
 		return true;
-		//return other.isInPosition(this);
 	}
 	
 	@Override
 	public boolean receiveInteraction(Goomba goomba) {
-		//System.out.println("bbsita");
 		
-		if (goomba.isAlive()) {
-			goomba.receiveInteraction(this);	
-		}else {
+		goomba.dead();
+		game.addPoints(100);
+		
+		if (isAlive()) {
 			if (!cayendo) {
 				if (this.big) {
 					this.big = false;
@@ -364,13 +313,8 @@ public class Mario extends MovingObject{
 					dead();
 				}	
 			}
-			return true;
 		}
 		return true;
-	}
-	
-	public void wins() {
-		game.marioExited();
 	}
 	
 	public boolean isWin() {
@@ -381,11 +325,6 @@ public class Mario extends MovingObject{
 		return this.big;
 	}
 	
-	
-	private void goingToDead() {
-		dead();
-		game.marioDead();
-	}
 	
 	@Override
 	public boolean interactWith(GameItem item) {
@@ -398,23 +337,22 @@ public class Mario extends MovingObject{
 	
 	@Override
 	public boolean receiveInteraction(MushRoom mushRoom) {
-		// TODO Auto-generated method stub
-		if (mushRoom.isAlive()) {
-			mushRoom.receiveInteraction(this);
-		}else {
-			if (!big) {
-				this.big = true;
-			}
+		mushRoom.receiveInteraction(this);
+		if (!big) {
+			this.big = true;
 		}
 		return true;
 	}
 	
 	@Override
 	public boolean receiveInteraction(Box box) {
-		if(box.isFull()) {
-			box.receiveInteraction(this);
-		}
+		box.receiveInteraction(this);
 		return false;
+	}
+	
+	
+	public void addMarioGame() {
+		game.addMario(this);
 	}
 	
 }

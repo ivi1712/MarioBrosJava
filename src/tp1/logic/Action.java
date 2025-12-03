@@ -1,5 +1,8 @@
 package tp1.logic;
 
+import tp1.exceptions.ActionParseException;
+import tp1.view.Messages;
+
 /**
  * Represents the allowed actions in the game
  *
@@ -23,6 +26,37 @@ public enum Action {
 		return y;
 	}
 	
-	//TODO fill your code
+	public static Action parseAction(String word) throws ActionParseException{
+		// direccion si existe
+		switch (word.toLowerCase()) {
+		case "right", "r" -> {
+			return RIGHT;
+		}
+		case "left", "l" -> {
+			return LEFT;
+		}
+		case "stop", "s" -> {
+			return STOP;
+		}
+		case "up", "u" -> {
+			return UP;
+		}
+		case "down", "d" -> {
+			return DOWN;
+		}
+		default -> {
+			//Aqui se coje el error de ActionCommand
+			throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(word));
+			}
+		}
+	}
+	
+	public static Action oposite(Action dir) {
+		if(dir == Action.UP) return Action.DOWN;
+		if(dir == Action.DOWN) return Action.UP;
+		if(dir == Action.RIGHT) return Action.LEFT;
+		if(dir == Action.LEFT) return Action.RIGHT;
+		else return dir;
+	}
 	
 }

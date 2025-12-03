@@ -3,8 +3,8 @@ package tp1.control;
 
 import tp1.control.commands.Command;
 import tp1.control.commands.CommandGenerator;
+import tp1.exceptions.CommandException;
 import tp1.logic.GameModel;
-import tp1.logic.GameWorld;
 import tp1.view.GameView;
 import tp1.view.Messages;
 
@@ -17,7 +17,6 @@ public class Controller {
 
 	private GameModel game;
 	private GameView view;
-	private GameWorld world;
 
 	public Controller(GameModel game, GameView view) {
 		this.game = game;
@@ -33,25 +32,22 @@ public class Controller {
 	    view.showWelcome();
 	 // Muestra el estado actual del juego
         view.showGame();
-        
-        
 	    while (!game.isFinished()) {
-	        
-	        
 	        String[] prompt = view.getPrompt();
-	        Command command = CommandGenerator.parse(prompt);
-	        // aO (14,5) Mario right big
-	        if (command != null) {
-	            command.execute(game, view);
-	            //game.tick();
-	         } else {
-	            //System.out.printf(Messages.ERROR + "%n", String.format(Messages.UNKNOWN_COMMAND, prompt[0]));
-	        	view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", prompt)));
+	        try {
+		        Command command = CommandGenerator.parse(prompt);
+		        command.execute(game, view);
+	        } catch (CommandException e) {
+	        	view.showError(e.getMessage());
+	 			Throwable cause = e.getCause();
+	 			while (cause != null) {
+	 				view.showError(cause.getMessage());
+	 				cause = cause.getCause();
+	 			}
 	        }
+	            
 	    }
-	    
 	    // Muestra el estado final del juego
-	    //view.showGame();
 	    view.showEndMessage();
 			
 	}//run

@@ -1,16 +1,12 @@
 package tp1.logic;
 
-/**
- * 
- * TODO: Immutable class to encapsulate and manipulate positions in the game board
- * 
- */
-public class Position {
+import tp1.exceptions.PositionParseException;
+import tp1.view.Messages;
+
+public final class Position {
 
 	private final int col;
 	private final int row;
-
-	//TODO fill your code
 	
 	public Position(int row, int col) {
 		this.row = row;
@@ -34,16 +30,28 @@ public class Position {
 		return p.col > Game.DIM_X || p.col < 0;
 	}
 	
+	public boolean isRoof(Position p) {
+		return p.row < 0;
+	}
+	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
+		
 		return "(" + this.col + "," + this.row + ")";
 	}
-
-	/*
-	public void move(Action a) {
-		this.row += a.getY();
-		this.col += a.getX();
-	}*/
+	
+	public static Position parsePosition(String parse) throws PositionParseException{
+		if (parse == null) return null;
+		String[] parseList = parse.split(",");
+		parseList[0] = parseList[0].replaceAll("\\(", "");
+		parseList[1] = parseList[1].replaceAll("\\)", "");
+		Position p;
+		try {
+			p = new Position(Integer.parseInt(parseList[0]), Integer.parseInt(parseList[1]));
+		} catch(NumberFormatException e) {
+			throw new PositionParseException(Messages.INVALID_POSITION_FORMAT.formatted(parse), e);
+		}
+		return p;
+	}
 
 }

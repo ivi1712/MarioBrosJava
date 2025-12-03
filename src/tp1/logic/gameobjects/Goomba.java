@@ -1,57 +1,60 @@
 package tp1.logic.gameobjects;
 
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
+import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
-import tp1.logic.Game;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
 import tp1.view.Messages;
 
 public class Goomba extends MovingObject{
-
-	//private Position pos;
-	//private Game game;
-	//private boolean avanza= true;
-	private boolean dead;
-	private boolean alive;
-	
 	
 	public Goomba(GameWorld game, Position position) {
-		// TODO Auto-generated constructor stub
 		super(game, position);
-		this.NAME = "goomba";
-		this.SHORTCUT = "g";
+		this.NAME = Messages.GOOMBA_NAME;
+		this.SHORTCUT = Messages.GOOMBA_SHORTCUT;
 	}
 	
 	public Goomba() {
 		super();
-		this.NAME = "goomba";
-		this.SHORTCUT = "g";
+		this.NAME = Messages.GOOMBA_NAME;
+		this.SHORTCUT = Messages.GOOMBA_SHORTCUT;
 	}
 	
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 		
 		// comprobacion goomba
-		if (objWords[2].toLowerCase().equals(this.NAME) || objWords[2].toLowerCase().equals(this.SHORTCUT)) {
+		if (matchName(objWords[1])) {
 			
-			Position p = new Position(Integer.parseInt(objWords[0]), Integer.parseInt(objWords[1]));
-			
-			// añadimos el juego		
-			// añadimos la posicion 
-			Goomba g = new Goomba(game, p);
-			
-			if (objWords.length > 3) {
-				// direccion si existe
-				switch (objWords[3]) {
-				case "right", "r" -> {
-					g.avanza = false;
-				}
-				case "left", "l" -> {
-					g.avanza = true;
-				}
-				default -> {return null;}
+			Position p;
+			try {
+				p = Position.parsePosition(objWords[0]);
+			} catch (PositionParseException e) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
 			}
-			}
-			return g;
+				
+				Goomba g = new Goomba(game, p);
+				
+				// direccion goomba
+				if (objWords.length > 2) {
+					// direccion si existe
+					switch (objWords[2].toLowerCase()) {
+					case "right", "r" -> {
+						//&g.avanza = false;
+						g.avanza = Action.RIGHT;
+					}
+					case "left", "l" -> {
+						//g.avanza = true;
+						g.avanza = Action.LEFT;
+					}
+					default -> {
+						throw new ObjectParseException(Messages.UNKNOWN_ACTION.formatted(objWords[2]));
+					}
+				}
+				}
+				return g;
+				
 		}
 		return null;
 		
@@ -59,7 +62,7 @@ public class Goomba extends MovingObject{
 	
 	@Override
 	protected GameObject createInstance(GameWorld game, Position pos) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -87,23 +90,15 @@ public class Goomba extends MovingObject{
 	}
 	
 	
-	
 	public boolean isDead() {
 		//return this.dead;
 		return !isAlive();
 	}
 	
 	public boolean receiveInteraction(Mario other) {
-		//this.dead = true;
-		//dead();
-		if (isAlive() && other.isAlive()) {
-			game.addPoints(100);
-			dead();
+		if (isAlive()) {
 			other.receiveInteraction(this);
 		}
-		
-		//other.receiveInteraction(this);
-		//game.cleanGoomba();
 		return true;
 	}
 	

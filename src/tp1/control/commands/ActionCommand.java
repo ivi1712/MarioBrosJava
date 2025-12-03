@@ -1,10 +1,11 @@
 package tp1.control.commands;
 
-import tp1.logic.ActionList;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import tp1.exceptions.ActionParseException;
+import tp1.exceptions.CommandExecuteException;
+import tp1.exceptions.CommandParseException;
 import tp1.logic.Action;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
@@ -35,47 +36,48 @@ public class ActionCommand extends AbstractCommand{
 	//Metodo parse : Encargada de convertir el texto en acciones
 	
 	@Override
-	public Command parse(String[] words) {
-		//Creo que me falta el equals y el toLowerCase ??
-		if(words.length >= 2 && 
-				(words[0].toLowerCase().equalsIgnoreCase("a") || words[0].toLowerCase().equalsIgnoreCase("action"))) {
-
+	public Command parse(String[] words) throws CommandParseException{
+		if(matchCommandName(words[0])) {
+			
+			if (words.length < 2) {
+	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	        }
+			
+			ActionCommand cmd = new ActionCommand();
+			
 			//Procesamos cada accion
 			for(int i = 1; i<words.length; i++) {
-				switch(words[i].toLowerCase()) {
-				case "l", "left" -> this.actions.add(Action.LEFT);
-                case "r", "right" -> this.actions.add(Action.RIGHT);
-                case "u", "up" -> this.actions.add(Action.UP);
-                case "d", "down" -> this.actions.add(Action.DOWN);
-                case "s", "stop" -> this.actions.add(Action.STOP);
-                default -> {
-                	// Comando inválido
-                	//System.out.printf(Messages.ERROR + "%n", String.format(Messages.UNKNOWN_ACTION, words[i]));
-                	//return null;
-                	//return null;
-                	}
-				}//switch
+				try {
+					Action dir = Action.parseAction(words[i].toLowerCase());
+					cmd.actions.add(dir);
+				}catch(ActionParseException e){
+					//Hay que cambair el mensaje ver los tests
+					// " Command Parse problem"
+					//No lanzamos el error simplemente la cojemos
+					//La accion es cojida por la clase de Action
+					
+				}
+					
 				
 			}//for
-			// return cmd
-			return this; //Devuelve el comando (el mismo) con las acciones cargadas
+			
+			if (cmd.actions.isEmpty()) {
+	            throw new CommandParseException(Messages.ACTION_COMMAND_EMPTY);
+	        }
+			return cmd; //Devuelve el comando con las acciones cargadas
 		}
-		return null; // No es el comando esperado -> action
+		return null;
 	}
 	
 	//Metodo encargado de agragar esas acciones a la lista de acciones de Mario 
 	//y Actualiza el juego
 	@Override
-	public void execute(GameModel game, GameView view) {
+	public void execute(GameModel game, GameView view) throws CommandExecuteException{
 		//Añadir todas la sacciones a la lista de acciones de Mario
 		//Copiar private actions a mario actionlist 
 		while(!actions.isEmpty()) {
-			Action action = this.actions.remove(0); // ejecuta accion x, x es la siguiente accion que le toca ejecutar
-			if(action != null) {
-				game.addAction(action); //Agragamos la accion al juego
-			}
+			game.addAction(this.actions.remove(0)); //Agragamos la accion al juego
 		}
-		game.restringirLista(); // metodo para cambiar 
 		game.update(); // Actualiza el estado del jeugo con las acciones
 		view.showGame();
 	}

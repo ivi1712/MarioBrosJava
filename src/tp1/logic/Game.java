@@ -1,8 +1,9 @@
 package tp1.logic;
 
-
-
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
 import tp1.logic.gameobjects.*;
+import tp1.view.Messages;
 
 
 public class Game implements GameWorld, GameModel, GameStatus{
@@ -23,31 +24,44 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	private boolean finish = false;
 	private boolean wins = false;
 	private boolean looses = false;
-
-	//TODO fill your code
 	
 	public Game(int nLevel) {
-		// TODO Auto-generated constructor stub
 		this.remainingTime = 100;
 		this.points = 0;
 		this.lives = 3;
-		//System.out.println("creando game");
 		this.nLevel = nLevel;
 		reset(nLevel);
 	}
 	
-	public boolean parseGameObjectFactory(String objWords[]){
-		GameObject gameobject = GameObjectFactory.parse(objWords, this);
-		if (gameobject != null) {
-			gameObjects.add(gameobject);
-			return true;
-		}else{
-			return false;
+	
+	public void parseGameObjectFactory(String objWords[]) throws OffBoardException, ObjectParseException {
+		// intentamos crear Mario
+		
+		//Nuevo gameObject -> Mario
+		GameObject nm = new Mario();
+		
+		//Parseamos el Mario
+		nm = nm.parse(objWords, this);
+		if(nm != null) {
+			//Nuevo Mario añadido al jeugo y a la factoría
+			gameObjects.addObjectFactory(nm);
+			nm.addMarioGame();
 		}
 		
+		
+		//Resto de objetos que no son 
+		GameObject gameobject = GameObjectFactory.parse(objWords, this);
+		if(gameobject == null)
+			throw new ObjectParseException(Messages.INVALID_GAME_OBJECT.formatted(String.join(" ", objWords)));
+		
+		
+			gameObjects.addObjectFactory(gameobject);
 	}
 	
-	
+	public void addMario(Mario m) {
+		gameObjects.remove(this.mario);
+		this.mario = m;
+	}
 	
 	public void marioExited() {
 		this.wins = true;
@@ -55,18 +69,15 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		this.points += this.remainingTime *10;
 		this.remainingTime = 0;
 		finish();
-		
 	}
 	
 	public boolean isFinished() {
 		return finish;
 	}
 	
-	
 	public void finish() {
 		this.finish = true;
 	}
-	
 	
 	public boolean reset(int nLevel) {
 		this.nLevel = nLevel;
@@ -91,11 +102,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		this.lives = 3;
 	}
 	
-	
 	public String positionToString(int col, int row) {
-		// TODO Auto-generated method stub
-		return this.gameObjects.positionToString(new Position(col, row));
 		
+		return this.gameObjects.positionToString(new Position(col, row));
 	}
 
 	public void update() {
@@ -111,26 +120,21 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	}
 	
 	public void addAction(Action act) {
-		//mario.addAction(act);
-		gameObjects.addAction(act);
-	}
-	
-	public void restringirLista() {
-		mario.restringirLista();
+		if (act != null) mario.addAction(act); 
 	}
 	
 	public boolean playerWins() {
-		// TODO Auto-generated method stub
+		
 		return (this.finish && this.wins);
 	}
 
 	public int remainingTime() {
-		// TODO Auto-generated method stub
+		
 		return this.remainingTime;
 	}
 
 	public int points() {
-		// TODO Auto-generated method stub
+		
 		return this.points;
 	}
 	
@@ -139,18 +143,20 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	}
 
 	public int numLives() {
-		// TODO Auto-generated method stub
+		
 		return this.lives;
 	}
 
 	@Override
 	public String toString() {
-		// TODO returns a textual representation of the object
-		return "TODO: Hola soy el game";
+		return Messages.GAME_NAME + " " + Messages.VERSION + "\n" + 
+				Messages.REMAINING_TIME.formatted(remainingTime) + "\n" + 
+				Messages.POINTS.formatted(points) + "\n" + 
+				Messages.NUM_LIVES.formatted(lives) + "\n";
 	}
 
 	public boolean playerLoses() {
-		// TODO Auto-generated method stub
+		
 		return this.looses;
 	}
 	
@@ -167,8 +173,8 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	}
 	
 	
-	public void doInteraction(GameObject gobj) {
-		gameObjects.doInteraction(gobj);
+	public void doInteractions(GameObject gobj) {
+		gameObjects.doInteractions(gobj);
 	}
 	
 	
@@ -337,6 +343,15 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		return (this.finish && this.wins);
 	}
 	
+	
+	public void exit() {
+		finish();
+	}
+	
+	
+	public void addGameObject(GameObject obj) {
+		gameObjects.addPending(obj);
+	}
 
 	@Override
 	public void clean() {
@@ -349,15 +364,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public void exit() {
-		finish();
-	}
-	
-	
-	// añadir seta desde box
-	public void addMushroom(Position p) {
-		gameObjects.addPending(new MushRoom(this, p.moved(Action.UP)));
+	public boolean offBoard(Position p) {
+	    // Comprueba si se sale por los lados, por el techo o por el suelo (vacío)
+	    return p.isLateral(p) || p.isRoof(p) || p.isVacio(p);
 	}
 	
 }

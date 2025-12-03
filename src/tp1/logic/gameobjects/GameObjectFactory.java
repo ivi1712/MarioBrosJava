@@ -2,21 +2,17 @@ package tp1.logic.gameobjects;
 
 import java.util.Arrays;
 import java.util.List;
-import tp1.control.commands.ActionCommand;
-import tp1.control.commands.Command;
-import tp1.control.commands.ExitCommand;
-import tp1.control.commands.HelpCommand;
-import tp1.control.commands.ResetCommand;
-import tp1.control.commands.UpdateCommand;
+
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
 import tp1.logic.GameWorld;
+import tp1.view.Messages;
 
 public class GameObjectFactory {
 
 	public GameObjectFactory() {
-		// TODO Auto-generated constructor stub
 	}
 	private static final List<GameObject> availableObjects  = Arrays.asList(
-			//TODO fill with your code
 			new Land(),
 			new ExitDoor(),
 			new Goomba(),
@@ -24,12 +20,14 @@ public class GameObjectFactory {
 			new Box(),
 			new MushRoom()
 	);
-	public static GameObject parse (String objWords[], GameWorld game) {
+	public static GameObject parse (String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
+		GameObject parsed = null;
 		for (GameObject c: availableObjects) {
-			//TODO fill with your code
-			GameObject parsed = c.parse(objWords, game);
+			parsed = c.parse(objWords, game);
 			if(parsed != null) return parsed;
 		}
+		if (parsed == null) throw new ObjectParseException(Messages.COMMAND_ADDOBJECT_DETAILS);
+		
 		return null;
 		
 	}

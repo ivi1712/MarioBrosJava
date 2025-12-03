@@ -1,15 +1,18 @@
 package tp1.logic.gameobjects;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
+import java.text.ParseException;
 
+import tp1.exceptions.GameParseException;
+import tp1.exceptions.ObjectParseException;
+import tp1.exceptions.OffBoardException;
+import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
+import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
 import tp1.view.Messages;
 
-public abstract class GameObject implements GameItem { // TODO 
+public abstract class GameObject implements GameItem { 
 
 	protected Position pos; // If you can, make it private.
 	//protected boolean alive;
@@ -37,35 +40,44 @@ public abstract class GameObject implements GameItem { // TODO
 		return (this.pos.equals(p));
 	}
 	
-	public void addAction(Action act) {
-		// NO hace nada sino es mario.
+	public boolean isInPosition(GameObject g) {
+		return (this.pos.equals(g.pos));
 	}
+	
 	public boolean isAlive() {return true;};
-	public void dead() {};
 	
-	// TODO implement and decide, Which one is abstract?
-	// public boolean isSolid()
-	public void update() {
-		
-	}
-	
+	// abstractas
+	public abstract void dead();
+	public abstract void update();
 	public abstract String getIcon();
 
 	// Not mandatory but recommended
 	protected void move(Action dir) {
-		// TODO Auto-generated method stub
+		
 		this.pos = this.pos.moved(dir); 
 	}
-	public GameObject parse(String objWords[], GameWorld game) {
+	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException{
 		// addGameObject objectos sencillos esto es para land, exit door, goomba y los nurvos objrtos. todo menos mario
 		// x = 0, y= 1, n or sh = 2
 		// comprobar que es el 
-		if(objWords[2].toLowerCase().equals(this.NAME) || objWords[2].toLowerCase().equals(this.SHORTCUT)) {
-			Position p = new Position(Integer.parseInt(objWords[0]), Integer.parseInt(objWords[1]));
-			// inicializr y devolver
-			this.pos = p;
-			this.game = game;
+		if(matchName(objWords[1])) {
+			Position p;
+			try {
+				p = Position.parsePosition(objWords[0]);
+				
+				if(p.isLateral(p)|| p.isVacio(p) || p.isRoof(p))
+					throw new OffBoardException(Messages.INVALID_POSITION_FORMAT.formatted(String.join(" ", objWords)));
+				
+			} catch (PositionParseException e) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
+			}
+			
+			if(objWords.length > 2) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_EXTRA_ARGS.formatted(String.join(" ", objWords)));
+			}
+			
 			return createInstance(game, p);
+			
 		}
 		return null;
 	}
@@ -76,44 +88,54 @@ public abstract class GameObject implements GameItem { // TODO
 	
 	@Override
 		public boolean interactWith(GameItem item) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	@Override
 		public boolean isSolid() {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	@Override
 		public boolean receiveInteraction(ExitDoor obj) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	@Override
 		public boolean receiveInteraction(Goomba obj) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	@Override
 		public boolean receiveInteraction(Land obj) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	@Override
 		public boolean receiveInteraction(Mario obj) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	@Override
 	public boolean receiveInteraction(MushRoom obj) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 	
 	@Override
 	public boolean receiveInteraction(Box obj) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 	
+	public void addMarioGame() {
+		// solo se sobreescribe en Mario
+	}
+	
+	public void add(GameObjectContainer gameObjects) {
+		gameObjects.add(this);
+	}
+	public boolean matchName(String s) {
+		return s.toLowerCase().equals(this.NAME)|| s.toLowerCase().equals(this.SHORTCUT);
+	}
 }

@@ -6,12 +6,12 @@ import tp1.logic.Position;
 
 public abstract class MovingObject extends GameObject {
 	
-	protected boolean avanza = true;
+	//protected boolean avanza = true;
+	protected Action avanza = Action.LEFT;
 	private boolean alive = true;
 
 	public MovingObject(GameWorld game, Position pos) {
 		super(game, pos);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public MovingObject() {
@@ -19,52 +19,40 @@ public abstract class MovingObject extends GameObject {
 	}
 
 	@Override
-	public String getIcon() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract String getIcon();
 	
-	// objetos que tienen vida
-	// no estan en la clase super ya que no viven
 	public boolean isAlive() {return alive;}
 	public void dead(){
-		//System.out.println("ha muerto un objeto");
 		this.alive = false;
 	}
 	
 	protected boolean automaticMovement() {
 		
 		if (caida(this.pos.moved(Action.DOWN))) return false;
-		Action dir = this.avanza ? Action.LEFT : Action.RIGHT;
-		Position lateral = this.pos.moved(dir);
-		//if (lateral.isLateral(lateral) || game.isSolid(lateral))
-		if(isNextToLateral(dir)|| isNextToSolid(dir)) {
-			this.avanza = !this.avanza;
-			leftToRight(this.avanza);
-			//dir = avanza ? Action.LEFT : Action.RIGHT;
-			//this.pos = this.pos.moved(dir);
+		//Action dir = this.avanza ? Action.LEFT : Action.RIGHT;
+		if(isNextToLateral(this.avanza)|| isNextToSolid(this.avanza)) {
+			//this.avanza = !this.avanza;
+			leftToRight(avanza);
 		} else {
-			//this.pos = this.pos.moved(dir);
-			movimientoUnitario(this.avanza, dir);
+			movimientoUnitario(this.avanza);
 		}
 		return false;
 	}
+	public void leftToRight(Action dir) {
+		this.avanza = Action.oposite(dir);
+	}
+	
 	
 	public boolean isNextToSolid(Action dir) {
 		return game.isSolid(this.pos.moved(dir));
 	}
 	
 	public boolean isNextToLateral(Action dir) {
-		//return game.isLateral(this.pos.moved(dir));
 		return this.pos.isLateral(this.pos);
 	}
 	
-	protected void movimientoUnitario(boolean avanza, Action dir) {
+	protected void movimientoUnitario(Action dir) {
 		this.pos = this.pos.moved(dir);
-	}
-	
-	public void leftToRight(boolean avanza) {
-		
 	}
 	
 	public boolean caida(Position suelo) {
@@ -78,5 +66,5 @@ public abstract class MovingObject extends GameObject {
 		}
 		return false;
 	}
-
+	
 }

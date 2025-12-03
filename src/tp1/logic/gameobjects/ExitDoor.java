@@ -1,6 +1,5 @@
 package tp1.logic.gameobjects;
 
-import tp1.logic.Action;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
 import tp1.view.Messages;
@@ -16,7 +15,6 @@ public class ExitDoor extends GameObject{
 	
 	public ExitDoor(GameWorld game, Position pos) {
 		super(game, pos);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ExitDoor() {
@@ -39,22 +37,40 @@ public class ExitDoor extends GameObject{
 	
 	@Override
 	public boolean receiveInteraction(Mario obj) {
-		// TODO Auto-generated method stub
-		//game.marioExited();
 		obj.receiveInteraction(this);
 		return true;
 	}
 
 	@Override
 	public boolean receiveInteraction(MushRoom mushRoom) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 	
 	@Override
 	protected GameObject createInstance(GameWorld game, Position pos) {
-		// TODO Auto-generated method stub
+		
 		return new ExitDoor(game, pos);
+	}
+	
+	@Override
+	public boolean interactWith(GameItem item) {
+		boolean canInteract = item.isInPosition(this.pos);
+		if(canInteract) {
+			item.receiveInteraction(this);
+			return false;
+		}
+		return canInteract;
+	}
+
+	@Override
+	public void dead() {
+		return;
+	}
+
+	@Override
+	public void update() {
+		return;
 	}
 	
 }
