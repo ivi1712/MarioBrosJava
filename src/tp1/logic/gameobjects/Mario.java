@@ -70,7 +70,7 @@ public class Mario extends MovingObject{
 				//m.big = stringtoBig(objWords[3].toLowerCase());
 				switch (objWords[3].toLowerCase()) {
                 case "big", "b" ->  m.big = true;
-                case "left", "l"-> m.big = false;
+                case "small", "s"-> m.big = false;
                 default -> {throw new ObjectParseException(Messages.INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));} 
 				}
 			}
@@ -92,7 +92,7 @@ public class Mario extends MovingObject{
 				while(actlist.anyActions()) {
 					actionMovement(actlist.nextAction());
 					game.doInteractions(this);
-				}	
+				}
 				//this.avanza = false;
 				//if (this.avanza == Action.STOP) return;
 				//this.avanza = Action.RIGHT;

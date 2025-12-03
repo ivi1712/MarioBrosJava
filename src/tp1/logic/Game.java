@@ -46,6 +46,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			//Nuevo Mario añadido al jeugo y a la factoría
 			gameObjects.addObjectFactory(nm);
 			nm.addMarioGame();
+			return;
 		}
 		
 		

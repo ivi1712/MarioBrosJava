@@ -89,7 +89,7 @@ public class GameObjectContainer {
 			gobj.interactWith(obj);			
 			// comprobar que no este zombie
 			if (!gobj.isAlive()) return;
-			if (!obj.isAlive()) return;
+			if (!obj.isAlive()) continue;
 			obj.interactWith(gobj);
 		}//6574
 	}
