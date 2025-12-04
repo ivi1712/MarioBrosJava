@@ -69,6 +69,8 @@ public class Messages {
 	public static final String ERROR_COMMAND_EXECUTE = "Command execute problem";
 	public static final String ACTION_COMMAND_EMPTY = "Incorrect 'action command', because the action list is empty (all actions are unknown).";
 	public static final String COMMAND_PARSE_PROBLEM = "Command parse problem";
+	
+	public static final String ACCESS_DENIED = "Acceso denegado al archivo: \"%s\" ";
 
 	
 	public static final String HELP_AVAILABLE_COMMANDS = "Available commands:";
@@ -138,7 +140,7 @@ public class Messages {
 	public static final String COMMAND_SAVE_COMMAND_DETAILS = "[s]ave <filename>";
 	public static final String COMMAND_SAVE_COMMAND_HELP = "save the actual configuration in text file <fileName>";
 	
-	public static final String FILE_NOT_FOUND = "Error FILE NOT FOUND";
+	public static final String FILE_NOT_FOUND = "File not found: \"%s\" ";
 
 	
 	
