@@ -139,5 +139,8 @@ public abstract class GameObject implements GameItem {
 		return s.toLowerCase().equals(this.NAME)|| s.toLowerCase().equals(this.SHORTCUT);
 	}
 	
-	
+	public String toString() {
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize; // ej: (14,0) Land
+	}
 }
