@@ -119,6 +119,12 @@ public class Box extends GameObject {
 	public void update() {
 		return;
 	}
-	
+	//toString
+	public String toString() {
+		String status = this.full ? "Full" : "Empty";
+		// capitalize first letter of NAME
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize + " " + status; // ej: (14,0) Box Full, primera del this.NAME en mayusculas
+	}
 	
 }

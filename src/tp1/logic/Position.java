@@ -36,7 +36,6 @@ public final class Position {
 	
 	@Override
 	public String toString() {
-		
 		return "(" + this.col + "," + this.row + ")";
 	}
 	

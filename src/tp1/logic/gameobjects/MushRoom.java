@@ -14,7 +14,6 @@ public class MushRoom extends MovingObject {
 	public MushRoom(GameWorld game, Position pos) {
 		super(game, pos);
 		this.avanza = Action.RIGHT;
-		//this.avanza = false;
 		this.NAME = Messages.MUSHROOM_NAME;
 		this.SHORTCUT = Messages.MUSHROOM_SHORTCUT;
 		
@@ -66,8 +65,8 @@ public class MushRoom extends MovingObject {
 	
 	public GameObject parse(String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 		
-		// comprobacion goomba
-		if (objWords[1].toLowerCase().equals(this.NAME) || objWords[1].toLowerCase().equals(this.SHORTCUT)) {
+		// comprobacion
+		if (matchName(objWords[1])) {
 			Position p;
 			try {
 				p = Position.parsePosition(objWords[0]);
@@ -76,7 +75,7 @@ public class MushRoom extends MovingObject {
 			}
 			MushRoom m = new MushRoom(game,p);
 			
-			// direccion goomba
+			// direccion
 			if (objWords.length > 2) {
 				// direccion si existe
 				try {
@@ -88,7 +87,6 @@ public class MushRoom extends MovingObject {
 				}
 			}
 			
-			
 			return m;
 			
 		}
@@ -96,5 +94,11 @@ public class MushRoom extends MovingObject {
 		
 	}
 	
+	@Override
+	public String toString() {
+		// capitalize first letter of NAME
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize + " " + this.avanza.toString(); // ej: (14,0) MushRoom RIGHT, primera del this.NAME en mayusculas
+	}
 
 }

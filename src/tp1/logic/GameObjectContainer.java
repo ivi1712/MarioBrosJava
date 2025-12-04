@@ -94,4 +94,13 @@ public class GameObjectContainer {
 		}//6574
 	}
 	
+	//toString
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (GameObject obj : gameObjects) {
+			sb.append(obj.toString()).append("\n");
+		}
+		return sb.toString();
+	}
+
 }

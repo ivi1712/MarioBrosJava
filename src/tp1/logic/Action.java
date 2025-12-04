@@ -59,4 +59,15 @@ public enum Action {
 		else return dir;
 	}
 	
+	@Override
+	public String toString() {
+		switch(this) {
+		case RIGHT ->  {return "RIGHT";}
+		case LEFT ->  {return "LEFT";}
+		case UP ->  {return "UP";}
+		case DOWN ->  {return "DOWN";}
+		case STOP ->  {return "STOP";}
+		default -> {return "ERROR";}
+		}
+	}
 }

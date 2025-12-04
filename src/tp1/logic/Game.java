@@ -1,5 +1,9 @@
 package tp1.logic;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+import tp1.exceptions.GameModelException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.logic.gameobjects.*;
@@ -364,6 +368,51 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	public boolean offBoard(Position p) {
 	    // Comprueba si se sale por los lados, por el techo o por el suelo (vacío)
 	    return p.isLateral(p) || p.isRoof(p) || p.isVacio(p);
+	}
+
+	public void save(String fileName) throws GameModelException {
+		// solo arroja excepciones sino se puede guardar
+		// Utilizamos try-with-resources para instanciar el PrintWriter.
+        // Esto abre el fichero y asegura su cierre automático al terminar el bloque[cite: 304].
+        try (PrintWriter out = new PrintWriter(fileName)) {
+
+            // 1. Guardar el estado del juego (Ciclo, Puntos, Vidas)
+            // Usamos println para escribir una línea y añadir el salto de línea adecuado[cite: 305].
+            // El formato esperado según la práctica es: "Tiempo Puntos Vidas"
+            out.println(remainingTime + " " + points + " " + lives);
+
+            // 2. Guardar los objetos del tablero
+            // Delegamos en el contenedor. Asumimos que gameObjects tiene un método
+            // que devuelve la representación textual de todos los objetos.
+            // PrintWriter.print() escribe el String tal cual.
+            out.print(gameObjects.toString()); 
+
+        } catch (FileNotFoundException e) {
+            // El constructor de PrintWriter puede lanzar FileNotFoundException.
+            // La capturamos y la envolvemos en nuestra excepción del modelo.
+            throw new GameModelException(Messages.FILE_NOT_FOUND.formatted(fileName), e);
+        }
+    }
+
+	//load 
+	public void load(String fileName) throws GameModelException {
+		// TODO Auto-generated method stub
+		GameConfiguration config = null;
+		try {
+			config = new FileGameConfiguration(fileName, this);
+		} catch(Exception e) {
+			throw new GameModelException(Messages.ERROR_LOAD.formatted(fileName), e);
+		}
+		 this.remainingTime = config.getRemainingTime();
+		 this.points = config.points();
+		 this.lives = config.numLives();
+		 this.gameObjects = new GameObjectContainer();
+		 
+		 this.addMario(config.getMario());
+		 config.getMario().add(gameObjects); 
+		  for (GameObject obj : config.getNPCObjects()) {
+		        obj.add(gameObjects); 
+		  }
 	}
 	
 }

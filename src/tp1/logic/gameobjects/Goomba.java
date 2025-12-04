@@ -116,4 +116,10 @@ public class Goomba extends MovingObject{
 		return canInteract;
 	}
 
+	@Override
+	public String toString() {
+		
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize + " " + this.avanza.toString(); // ej: (14,0) Goomba
+	}	
 }

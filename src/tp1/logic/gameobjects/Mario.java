@@ -16,7 +16,6 @@ public class Mario extends MovingObject{
 	private boolean big = true;
 	private boolean cayendo = false;
 	private boolean downstop = false;
-	// direccion que esta mirando mario
 	private Action defaultAvanza = Action.RIGHT;
 	private ActionList actlist;	
 	
@@ -59,7 +58,6 @@ public class Mario extends MovingObject{
 					Action act = Action.parseAction(objWords[2]);
 					m.lookDirection(act, false);
 				} catch (ActionParseException e) {
-					// TODO: handle exception
 					throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)), e);
 				}
 			}
@@ -93,9 +91,6 @@ public class Mario extends MovingObject{
 					actionMovement(actlist.nextAction());
 					game.doInteractions(this);
 				}
-				//this.avanza = false;
-				//if (this.avanza == Action.STOP) return;
-				//this.avanza = Action.RIGHT;
 				return;
 			}
 			//automatico big
@@ -141,6 +136,7 @@ public class Mario extends MovingObject{
 			this.downstop = true;
 			this.avanza = dir;
 		} else if(dir == Action.UP) {
+			//if(this.avanza == Action.STOP) this.avanza = defaultAvanza;
 			this.downstop = false;
 		}
 		else {
@@ -233,9 +229,10 @@ public class Mario extends MovingObject{
 	}
 	
 	public String toString() {
-		return "Mario [pos=" + pos + ", big=" + big + 
-				", avanza=" + avanza + ", cayendo=" 
-				+ cayendo + "]";
+		String size = this.big ? "Big" : "Small";
+		// capitalize first letter of NAME
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize + " " + this.avanza.toString() + " " + size; // ej: (14,0) Mario RIGHT Big, primera del this.NAME en mayusculas
 	}
 	
 	public boolean isInPosition (Position p) {

@@ -10,14 +10,14 @@ import tp1.view.Messages;
 public class CommandGenerator {
 
 	private static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
-			
+			new LoadCommand(),
+			new SaveCommand(),
 			new AddObjectCommand(),
 			new ActionCommand(),
 			new UpdateCommand(),
 			new ResetCommand(),
 			new HelpCommand(),
 			new ExitCommand()
-			
 	);
 
 	public static Command parse(String[] commandWords) throws CommandParseException {		

@@ -1,5 +1,7 @@
 package tp1.logic;
 
+import tp1.exceptions.GameModelException;
+
 //Para el control del juego
 
 import tp1.exceptions.ObjectParseException;
@@ -15,4 +17,6 @@ public interface GameModel {
 	public void parseGameObjectFactory(String objWords[]) throws ObjectParseException, OffBoardException;
 	public void resetStats();
 	//public void addObject(String[] objWords) throws OffBoardException, ObjectParseException;
+	public void save(String fileName) throws GameModelException;
+	public void load(String fileName) throws GameModelException;
 }
