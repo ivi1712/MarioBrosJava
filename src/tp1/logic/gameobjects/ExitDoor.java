@@ -10,11 +10,14 @@ public class ExitDoor extends GameObject{
 	
 	public ExitDoor(Position pos){
 		super(pos);
-		//this.pos = pos;
+		this.NAME = Messages.EXITDOOR_NAME;
+		this.SHORTCUT = Messages.EXITDOOR_SHORTCUT;
 	}
 	
 	public ExitDoor(GameWorld game, Position pos) {
 		super(game, pos);
+		this.NAME = Messages.EXITDOOR_NAME;
+		this.SHORTCUT = Messages.EXITDOOR_SHORTCUT;
 	}
 
 	public ExitDoor() {
@@ -71,6 +74,11 @@ public class ExitDoor extends GameObject{
 	@Override
 	public void update() {
 		return;
+	}
+	
+	public String toString() {
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize; // ej: (14,0) Land
 	}
 	
 }

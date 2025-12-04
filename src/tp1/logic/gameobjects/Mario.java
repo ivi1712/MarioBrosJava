@@ -24,6 +24,8 @@ public class Mario extends MovingObject{
 		this.actlist = new ActionList();
 		//this.avanza = false;
 		this.avanza = Action.RIGHT;
+		this.NAME = Messages.MARIO_NAME;
+		this.SHORTCUT = Messages.MARIO_SHORTCUT;
 	}
 	
 	public Mario() {

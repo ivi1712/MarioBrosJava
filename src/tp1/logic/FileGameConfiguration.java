@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import tp1.exceptions.GameLoadException;
 import tp1.exceptions.GameModelException;
 import tp1.logic.gameobjects.GameObject;
 import tp1.logic.gameobjects.GameObjectFactory;
@@ -16,14 +17,14 @@ public class FileGameConfiguration implements GameConfiguration {
 	private int points;
 	private int lives; 
 
-	public FileGameConfiguration(String fileName, Game game) throws FileNotFoundException {
+	public FileGameConfiguration(String fileName, Game game) throws FileNotFoundException, GameLoadException {
 		// TODO Auto-generated constructor stub
 		Scanner scanner = new Scanner(new BufferedReader(new FileReader(fileName)));
 		readStatusGame(scanner);
-		readGameObjects(scanner, game);
+		//readGameObjects(scanner, game);
 	}
 	
-	public void readStatusGame(Scanner scanner) throws GameModelException{
+	public void readStatusGame(Scanner scanner) throws GameLoadException{
 		try {
             this.time = scanner.nextInt();
             this.points = scanner.nextInt();

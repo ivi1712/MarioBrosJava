@@ -9,10 +9,14 @@ public class Land extends GameObject{
 	
 	public Land(Position position) {
 		super(position);
+		this.NAME = Messages.LAND_NAME;
+		this.SHORTCUT = Messages.LAND_SHORTCUT;
 	}
 	
 	public Land(GameWorld game, Position pos) {
 		super(game, pos);
+		this.NAME = Messages.LAND_NAME;
+		this.SHORTCUT = Messages.LAND_SHORTCUT;
 	}
 
 	public Land() {
@@ -55,5 +59,8 @@ public class Land extends GameObject{
 	public void update() {
 		return;
 	}
-	
+	public String toString() {
+		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
+		return this.pos.toString() + " " + firstCapitalize; // ej: (14,0) Land
+	}
 }
