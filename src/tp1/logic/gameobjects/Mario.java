@@ -7,6 +7,8 @@ import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.ActionList;
+import tp1.logic.FileGameConfiguration;
+import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
 import tp1.view.Messages;
 import tp1.logic.Position;
@@ -349,5 +351,20 @@ public class Mario extends MovingObject{
 	public void addMarioGame() {
 		game.addMario(this);
 	}
+	
+	
+	@Override
+	public void addToGameConfiguration(FileGameConfiguration config) {
+		config.addMario(this);
+	}
+
+    @Override
+    public void add(GameObjectContainer gameObjects) {
+        // Al añadirse al contenedor, llamamos al método específico que actualiza la referencia en Game
+        // Y lo añadimos a la lista. 
+        // NOTA: Asegúrate de que Game.load() reinicia el container (new GameObjectContainer()) antes de llamar a esto.
+        game.addMario(this);
+        gameObjects.add(this);
+    }
 	
 }

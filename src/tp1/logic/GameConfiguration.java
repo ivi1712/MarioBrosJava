@@ -12,5 +12,5 @@ public interface GameConfiguration {
 	   public int numLives();
 	   // game objects
 	   public Mario getMario();
-	   public List<GameObject> getNPCObjects();
+	   public List<GameObject> getNPCObjects(); //Devuelve todos los objetos menos mario
 }

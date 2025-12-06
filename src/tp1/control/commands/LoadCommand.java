@@ -32,7 +32,7 @@ public class LoadCommand extends AbstractCommand {
             //Esto no se si esta bien
             view.showGame(); 
         }catch(GameModelException e){
-            throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, e);
+            throw new CommandExecuteException(Messages.UNABLE_TO_LOAD.formatted(fileName), e);
         }
         
 
@@ -44,6 +44,7 @@ public class LoadCommand extends AbstractCommand {
 		if(matchCommandName(commandWords[0])){
 			if(commandWords.length != 2)
                 throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			
 			LoadCommand cmd = new LoadCommand();
             cmd.fileName = commandWords[1];
             return cmd;

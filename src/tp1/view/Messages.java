@@ -130,17 +130,20 @@ public class Messages {
 	//LOAD
 	public static final String LOAD_COMMAND_NAME = "load";
 	public static final String LOAD_COMMAND_SHORTCUT = "l";
-	public static final String LOAD_COMMAND_DETAILS = "[l]oad <filename>";
+	public static final String LOAD_COMMAND_DETAILS = "[l]oad <fileName>";
 	public static final String LOAD_COMMAND_HELP = "load the game configuration from text file <fileName>";
 	public static final String ERROR_LOAD = "Error loading game: ";
+	public static final String INVALID_FILE_CONFIGURATION = "Invalid file \"%s\" configuration";
+	public static final String UNABLE_TO_LOAD = "Unable to load game configuration from file \"%s\"";
+	public static final String INVALID_GAME_STATUS = "Incorrect game status \"%s\"";
 
 	//SAVE
 	public static final String COMMAND_SAVE_COMMAND_NAME = "save";
 	public static final String COMMAND_SAVE_COMMAND_SHORTCUT = "s";
-	public static final String COMMAND_SAVE_COMMAND_DETAILS = "[s]ave <filename>";
+	public static final String COMMAND_SAVE_COMMAND_DETAILS = "[s]ave <fileName>";
 	public static final String COMMAND_SAVE_COMMAND_HELP = "save the actual configuration in text file <fileName>";
 	
-	public static final String FILE_NOT_FOUND = "File not found: \"%s\" ";
+	public static final String FILE_NOT_FOUND = "File not found: \"%s\"";
 
 	
 	

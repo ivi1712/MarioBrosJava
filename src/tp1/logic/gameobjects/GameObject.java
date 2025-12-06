@@ -7,6 +7,7 @@ import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
+import tp1.logic.FileGameConfiguration;
 import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
@@ -143,4 +144,11 @@ public abstract class GameObject implements GameItem {
 		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
 		return this.pos.toString() + " " + firstCapitalize; // ej: (14,0) Land
 	}
+
+
+	public void addToGameConfiguration(FileGameConfiguration config) {
+		config.addGameObject(this);		
+	}
+	
+	
 }

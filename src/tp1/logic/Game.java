@@ -3,6 +3,7 @@ package tp1.logic;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import tp1.exceptions.GameLoadException;
 import tp1.exceptions.GameModelException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
@@ -28,6 +29,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	private boolean finish = false;
 	private boolean wins = false;
 	private boolean looses = false;
+	
+	//Atributo nuevo, para gestionar el reset. Con la carga
+	private String lastLoadedFile = null;
 	
 	public Game(int nLevel) {
 		this.remainingTime = 100;
@@ -97,8 +101,22 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		return true;
 	}
 	
+	//Metodo modificado para soportar ficheros
 	public void reset() {
-		reset(this.nLevel);
+		// Si habíamos cargado un fichero, intentamos recargarlo
+		if (this.lastLoadedFile != null) {
+			try {
+				load(this.lastLoadedFile);
+			} catch (GameLoadException e) {
+				// Si falla (ej: borraron el archivo), volvemos al nivel por defecto
+				System.out.println("Warning: Unable to reload file. Resetting to default level.");
+				this.lastLoadedFile = null;
+				reset(this.nLevel);
+			}
+		} else {
+			// Reset normal
+			reset(this.nLevel);
+		}
 	}
 	
 	public void resetStats() {
@@ -390,20 +408,34 @@ public class Game implements GameWorld, GameModel, GameStatus{
     }
 
 	//load 
-	public void load(String fileName) throws GameModelException {
+	public void load(String fileName) throws GameLoadException {
 		// TODO Auto-generated method stub
-		GameConfiguration config = null;
-		try {
-			config = new FileGameConfiguration(fileName, this);
-		} catch(Exception e) {
-			throw new GameModelException(Messages.ERROR_LOAD.formatted(fileName), e);
-		}
+		GameConfiguration config = new FileGameConfiguration(fileName, this);;
+				
+		applayConfig(config);
+		
+		this.lastLoadedFile = fileName;
+	}
+	
+	//Aplicamos la configuracion dada por el fichero
+	private void applayConfig(GameConfiguration config) {
+
+		//Configuracion de las cosas
 		 this.remainingTime = config.getRemainingTime();
 		 this.points = config.points();
 		 this.lives = config.numLives();
+		 
+		 //Reinicia el contenedor de objetos
 		 this.gameObjects = new GameObjectContainer();
 		 
-		 this.addMario(config.getMario());
+		 //Añadimos bien al mario
+		 Mario newMario = config.getMario();
+		 //this.mario = newMario; //Modificamos el de game
+		 newMario.add(gameObjects); // Añadimos al contenedor
+		 
+		 
+		 
+		 //El resto
 		 config.getMario().add(gameObjects); 
 		  for (GameObject obj : config.getNPCObjects()) {
 		        obj.add(gameObjects); 
