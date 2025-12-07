@@ -142,8 +142,8 @@ public class Messages {
 	public static final String COMMAND_SAVE_COMMAND_SHORTCUT = "s";
 	public static final String COMMAND_SAVE_COMMAND_DETAILS = "[s]ave <fileName>";
 	public static final String COMMAND_SAVE_COMMAND_HELP = "save the actual configuration in text file <fileName>";
-	
 	public static final String FILE_NOT_FOUND = "File not found: \"%s\"";
+	public static final String FILE_SAVED_CORRECTLY = "   File \"%s\" correctly saved";
 
 	
 	

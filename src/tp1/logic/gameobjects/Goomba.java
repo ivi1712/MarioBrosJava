@@ -27,7 +27,6 @@ public class Goomba extends MovingObject{
 		
 		// comprobacion goomba
 		if (matchName(objWords[1])) {
-			
 			Position p;
 			try {
 				p = Position.parsePosition(objWords[0]);

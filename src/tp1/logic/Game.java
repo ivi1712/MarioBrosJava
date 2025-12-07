@@ -19,12 +19,14 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	private int remainingTime;
 	private int points;
 	private int lives;
-	
+	private final int defaultLives = 3;
 	private int nLevel;
 	
 	private Mario mario;
 	
 	private GameObjectContainer gameObjects;
+	private GameConfiguration lastConfig;
+	
 	
 	private boolean finish = false;
 	private boolean wins = false;
@@ -106,7 +108,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		// Si habíamos cargado un fichero, intentamos recargarlo
 		if (this.lastLoadedFile != null) {
 			try {
+				int oldLives = this.lives;
 				load(this.lastLoadedFile);
+				this.lives = oldLives;
 			} catch (GameLoadException e) {
 				// Si falla (ej: borraron el archivo), volvemos al nivel por defecto
 				System.out.println("Warning: Unable to reload file. Resetting to default level.");
@@ -119,9 +123,12 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		}
 	}
 	
+	
 	public void resetStats() {
-		this.points = 0;
-		this.lives = 3;
+		if (this.nLevel == -1) {
+			this.lives = defaultLives;
+			this.points = 0;
+		}
 	}
 	
 	public String positionToString(int col, int row) {
@@ -368,14 +375,8 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	}
 	
 	
-	public void addGameObject(GameObject obj) {
+	public void addGameObjectPending(GameObject obj) {
 		gameObjects.addPending(obj);
-	}
-
-	@Override
-	public void clean() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -399,6 +400,8 @@ public class Game implements GameWorld, GameModel, GameStatus{
 
             // guardamos todos los objetos del tablero
             out.print(gameObjects.toString()); 
+            
+            //view.showMessage(Messages.FILE_SAVED_CORRECTLY.formatted(fileName)+ "\n");
 
         } catch (FileNotFoundException e) {
             //	filenotfoundexception = tambie sirve para escritura
@@ -414,6 +417,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 				
 		applayConfig(config);
 		
+		this.lastConfig = config;
 		this.lastLoadedFile = fileName;
 	}
 	
@@ -429,16 +433,14 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		 this.gameObjects = new GameObjectContainer();
 		 
 		 //Añadimos bien al mario
-		 Mario newMario = config.getMario();
-		 //this.mario = newMario; //Modificamos el de game
-		 newMario.add(gameObjects); // Añadimos al contenedor
-		 
+		 GameObject newMario = config.getMario();
+		 newMario.addMarioGame();
+		 gameObjects.add(newMario);
 		 
 		 
 		 //El resto
-		 config.getMario().add(gameObjects); 
 		  for (GameObject obj : config.getNPCObjects()) {
-		        obj.add(gameObjects); 
+		        gameObjects.add(obj);
 		  }
 	}
 	

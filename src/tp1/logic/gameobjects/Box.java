@@ -16,6 +16,8 @@ public class Box extends GameObject {
 
 	public Box(GameWorld game, Position pos) {
 		super(game, pos);
+		this.NAME = Messages.BOX_NAME;
+		this.SHORTCUT = Messages.BOX_SHORTCUT;
 	}
 
 	public Box() {
@@ -51,7 +53,7 @@ public class Box extends GameObject {
 			
 			// diferencia entre full y empty
 			if (objWords.length > 2) {
-				switch (objWords[2]) {
+				switch (objWords[2].toLowerCase()) {
 				case "full", "f" -> {
 					b.full = true;
 				}
@@ -81,7 +83,7 @@ public class Box extends GameObject {
 		if(isFull()) {
 			game.addPoints(pointsAdd);
 			//game.addMushroom(this.pos);
-			game.addGameObject(new MushRoom(game, this.pos.moved(Action.UP)));
+			game.addGameObjectPending(new MushRoom(game, this.pos.moved(Action.UP)));
 			this.full = false;
 			m.receiveInteraction(this);		
 		}

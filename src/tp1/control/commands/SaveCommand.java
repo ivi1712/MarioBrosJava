@@ -28,8 +28,8 @@ public class SaveCommand extends AbstractCommand {
 	public void execute(GameModel game, GameView view) throws CommandExecuteException{
         try{
             game.save(fileName); 
-            //Esto no se si esta bien
-            //view.showMessage("Guardado con exito" + fileName); 
+            view.showMessage(Messages.FILE_SAVED_CORRECTLY.formatted(fileName)+ "\n");
+            game.update();
         }catch(GameModelException e){
             throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, e);
         }

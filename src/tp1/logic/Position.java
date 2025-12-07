@@ -36,7 +36,7 @@ public final class Position {
 	
 	@Override
 	public String toString() {
-		return "(" + this.col + "," + this.row + ")";
+		return "(" + this.row + "," + this.col + ")";
 	}
 	
 	public static Position parsePosition(String parse) throws PositionParseException{

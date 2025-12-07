@@ -352,14 +352,4 @@ public class Mario extends MovingObject{
 		game.addMario(this);
 	}
 	
-
-    @Override
-    public void add(GameObjectContainer gameObjects) {
-        // Al añadirse al contenedor, llamamos al método específico que actualiza la referencia en Game
-        // Y lo añadimos a la lista. 
-        // NOTA: Asegúrate de que Game.load() reinicia el container (new GameObjectContainer()) antes de llamar a esto.
-        game.addMario(this);
-        gameObjects.add(this);
-    }
-	
 }

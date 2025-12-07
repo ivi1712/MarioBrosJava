@@ -8,13 +8,12 @@ public interface GameWorld {
 	public void addPoints(int points);
 	public void marioExited();
 	public void marioDead();
-	public void clean();
 	public boolean isMarioWins();
 	public boolean interactWith();
 	
 	public void doInteractions(GameObject gobj);
 	public void addMario(Mario mario);
-	public void addGameObject(GameObject obj);
+	public void addGameObjectPending(GameObject obj);
 	public boolean offBoard(Position p);
 	
 }
