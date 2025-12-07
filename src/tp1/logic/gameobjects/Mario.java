@@ -352,11 +352,6 @@ public class Mario extends MovingObject{
 		game.addMario(this);
 	}
 	
-	
-	@Override
-	public void addToGameConfiguration(FileGameConfiguration config) {
-		config.addMario(this);
-	}
 
     @Override
     public void add(GameObjectContainer gameObjects) {

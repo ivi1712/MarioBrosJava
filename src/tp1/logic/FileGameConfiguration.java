@@ -19,7 +19,7 @@ public class FileGameConfiguration implements GameConfiguration {
 	private int time;
 	private int points;
 	private int lives;
-	private Mario mario;
+	private GameObject mario;
 	private List<GameObject> objects = new ArrayList<>();
 	
 	// Guardamos el nombre para mensajes de error si fuera necesario
@@ -86,6 +86,18 @@ public class FileGameConfiguration implements GameConfiguration {
 
 			String[] words = line.split("\\s+");
 			try {
+				
+				// Intentamso crear Mario, si mario != null enotnces es mario añadimos a game y a objetos
+				GameObject nm = new Mario();
+				nm = nm.parse(words, game);
+				if(nm != null) {
+					//Nuevo Mario añadido al jeugo y a la factoría
+					game.addGameObject(nm);
+					nm.addMarioGame();
+					this.mario = nm;
+					return;
+				}
+				
 				// Delegamos en la factoría (que ya lanza ObjectParseException si falla)
 				GameObject obj = GameObjectFactory.parse(words, game);
 				
@@ -99,17 +111,13 @@ public class FileGameConfiguration implements GameConfiguration {
 				//Tenemos que añadir al mario pero no se como , lo tenemos que añadir de forma que diferenciamos el mairo
 				// Y actualizamos el local, y si no es mario añadirlo a la lista de objetos
 				//Utilizamos el double dispach
-				obj.addToGameConfiguration(this);
+				
+				game.addGameObject(obj);
 				
 			} catch (GameModelException e) {
 				// Envolvemos cualquier error de parseo de objetos
 				throw new GameLoadException(Messages.INVALID_FILE_CONFIGURATION.formatted(fileName) , e);
 			}
-		}
-		
-		
-		if (this.mario == null) {
-			throw new GameLoadException("File does not contain Mario");
 		}
 	}
 	
@@ -126,14 +134,12 @@ public class FileGameConfiguration implements GameConfiguration {
 	public int numLives() {return lives;}
 
 	@Override
-	public Mario getMario() {return mario;}
+	public Mario getMario() {
+		return mario;
+	}
 
 	@Override
 	public List<GameObject> getNPCObjects() {return objects;}
 	
-	
-	// Métodos para el double dispach
-    public void addMario(Mario m) { this.mario = m; }
-    public void addGameObject(GameObject o) { this.objects.add(o); }
 
 }
