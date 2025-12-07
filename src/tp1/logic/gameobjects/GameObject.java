@@ -141,5 +141,11 @@ public abstract class GameObject implements GameItem {
 		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
 		return this.pos.toString() + " " + firstCapitalize; // ej: (14,0) Land
 	}
+
+
+	public GameObject copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

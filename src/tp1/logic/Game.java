@@ -110,7 +110,8 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			this.gameObjects = new GameObjectContainer();
 			int oldLives = this.lives;
 			//load(this.lastLoadedFile);
-			applayConfig(lastConfig);
+			resetApplay();
+			//applayObjectConfig(lastConfig);
 			this.lives = oldLives;
 		} else {
 			// Reset normal
@@ -118,6 +119,10 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		}
 	}
 	
+	private void resetApplay() {
+		this.remainingTime = lastConfig.getRemainingTime();
+		applayObjectConfig(lastConfig);
+	}
 	
 	public void resetStats() {
 		if (this.nLevel == -1) {
@@ -424,7 +429,12 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		 this.points = config.points();
 		 this.lives = config.numLives();
 		 
-		 //Reinicia el contenedor de objetos
+		 applayObjectConfig(config);
+		 
+	}
+	
+	private void applayObjectConfig(GameConfiguration config){
+		//Reinicia el contenedor de objetos
 		 this.gameObjects = new GameObjectContainer();
 		 
 		 //Añadimos bien al mario

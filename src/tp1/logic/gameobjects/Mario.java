@@ -365,4 +365,16 @@ public class Mario extends MovingObject{
 		game.addMario(this);
 	}
 	
+	public GameObject copy() {
+		// 1. Crear una instancia nueva en la misma posición que el prototipo
+        Mario newMario = new Mario(this.game, this.pos);
+        
+        // 2. Copiar los atributos que definen su estado inicial
+        newMario.big = this.big;         // Por si se cargó como "Mario BIG"
+        newMario.avanza = this.avanza;   // Por si se cargó con dirección distinta a RIGHT
+        
+        // 3. Devolver la copia fresca
+        return newMario;
+	}
+	
 }

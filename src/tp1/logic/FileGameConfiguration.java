@@ -111,7 +111,10 @@ public class FileGameConfiguration implements GameConfiguration {
 
 	@Override
 	public GameObject getMario() {
-		return mario;
+		if (this.mario != null) {
+            return this.mario.copy(); 
+        }
+        return null;
 	}
 
 	@Override
