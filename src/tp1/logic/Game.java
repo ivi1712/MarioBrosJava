@@ -408,11 +408,11 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	//load 
 	public void load(String fileName) throws GameLoadException {
 		// TODO Auto-generated method stub
-		GameConfiguration config = new FileGameConfiguration(fileName, this);;
+		GameConfiguration config = new FileGameConfiguration(fileName, this);
 				
 		applayConfig(config);
 		
-		this.lastConfig = config;
+		this.lastConfig = new FileGameConfiguration(fileName, this);
 		this.lastLoadedFile = fileName;
 	}
 	
