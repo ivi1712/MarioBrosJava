@@ -32,6 +32,3 @@ replay_pid*
 *.bak
 /.metadata/
 
-tests/
-
-
