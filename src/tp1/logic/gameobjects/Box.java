@@ -128,5 +128,11 @@ public class Box extends GameObject {
 		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
 		return this.pos.toString() + " " + firstCapitalize + " " + status; // ej: (14,0) Box Full, primera del this.NAME en mayusculas
 	}
+	@Override
+	public GameObject copy() {
+	    Box newBox = new Box(this.game, this.pos);
+	    newBox.full = this.full;
+	    return newBox;
+	}
 	
 }

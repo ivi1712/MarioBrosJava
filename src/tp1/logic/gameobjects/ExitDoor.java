@@ -75,4 +75,8 @@ public class ExitDoor extends GameObject{
 	public void update() {
 		return;
 	}
+	@Override
+	public GameObject copy() {
+	    return new ExitDoor(this.game, this.pos);
+	}
 }

@@ -110,18 +110,13 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			this.gameObjects = new GameObjectContainer();
 			int oldLives = this.lives;
 			//load(this.lastLoadedFile);
-			resetApplay();
-			//applayObjectConfig(lastConfig);
+			applayObjectConfig(lastConfig);
+			this.remainingTime = lastConfig.getRemainingTime();
 			this.lives = oldLives;
 		} else {
 			// Reset normal
 			reset(this.nLevel);
 		}
-	}
-	
-	private void resetApplay() {
-		this.remainingTime = lastConfig.getRemainingTime();
-		applayObjectConfig(lastConfig);
 	}
 	
 	public void resetStats() {

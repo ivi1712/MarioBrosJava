@@ -59,4 +59,8 @@ public class Land extends GameObject{
 	public void update() {
 		return;
 	}
+	@Override
+	public GameObject copy() {
+	    return new Land(this.game, this.pos);
+	}
 }

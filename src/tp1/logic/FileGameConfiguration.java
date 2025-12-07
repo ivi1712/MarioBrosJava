@@ -118,7 +118,18 @@ public class FileGameConfiguration implements GameConfiguration {
 	}
 
 	@Override
-	public List<GameObject> getNPCObjects() {return objects;}
+	public List<GameObject> getNPCObjects() {
+		//return objects;
+		List<GameObject> copies = new ArrayList<>();
+	    
+	    // Recorremos la lista de objetos originales guardada en memoria
+	    for (GameObject obj : this.objects) {
+	        // Añadimos una COPIA de cada uno a la nueva lista
+	        copies.add(obj.copy());
+	    }
+	    
+	    return copies;
+	}
 	
 
 }

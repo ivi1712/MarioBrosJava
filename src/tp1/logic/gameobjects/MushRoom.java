@@ -100,5 +100,10 @@ public class MushRoom extends MovingObject {
 		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
 		return this.pos.toString() + " " + firstCapitalize + " " + this.avanza.toString(); // ej: (14,0) MushRoom RIGHT, primera del this.NAME en mayusculas
 	}
-
+	@Override
+	public GameObject copy() {
+	    MushRoom newMushRoom = new MushRoom(this.game, this.pos);
+	    newMushRoom.avanza = this.avanza;
+	    return newMushRoom;
+	}
 }

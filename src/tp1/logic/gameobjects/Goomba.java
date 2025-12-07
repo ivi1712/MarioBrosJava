@@ -121,4 +121,15 @@ public class Goomba extends MovingObject{
 		String firstCapitalize = this.NAME.substring(0, 1).toUpperCase() + this.NAME.substring(1);
 		return this.pos.toString() + " " + firstCapitalize + " " + this.avanza.toString(); // ej: (14,0) Goomba
 	}	
+	
+	public GameObject copy() {
+	    // Creamos un nuevo Goomba en la misma posición (la original del fichero)
+	    Goomba nuevoGoomba = new Goomba(this.game, this.pos);
+	    
+	    // Copiamos la dirección por si el fichero decía que iba a la izquierda
+	    nuevoGoomba.avanza = this.avanza;
+	    
+	    return nuevoGoomba;
+	}
+	
 }
