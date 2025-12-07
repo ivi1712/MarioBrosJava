@@ -29,7 +29,6 @@ public class SaveCommand extends AbstractCommand {
         try{
             game.save(fileName); 
             view.showMessage(Messages.FILE_SAVED_CORRECTLY.formatted(fileName)+ "\n");
-            game.update();
         }catch(GameModelException e){
             throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, e);
         }

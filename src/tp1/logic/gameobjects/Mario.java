@@ -278,7 +278,8 @@ public class Mario extends MovingObject{
 		if(!game.isSolid(suelo)) {
 			if (suelo.isVacio(suelo)) {
 				this.pos = suelo;
-				game.marioDead();
+				//game.marioDead();
+				deadAndBig();
 				return true;
 			}
 			this.pos = suelo;
@@ -306,13 +307,25 @@ public class Mario extends MovingObject{
 				if (this.big) {
 					this.big = false;
 				} else {
-					game.marioDead();
+					//game.marioDead();
+					deadAndBig();
 					dead();
 				}	
 			}
 		}
 		return true;
 	}
+	
+	// cambiar esto, volver a poner como antes
+	private void deadAndBig() {
+		game.marioDead();
+	}
+	
+	// esto esta mal seguro
+	public void bigDefault() {
+		this.big = true;
+	}
+	
 	
 	public boolean isWin() {
 		return game.isMarioWins();

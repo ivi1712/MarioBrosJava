@@ -107,16 +107,11 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	public void reset() {
 		// Si habíamos cargado un fichero, intentamos recargarlo
 		if (this.lastLoadedFile != null) {
-			try {
-				int oldLives = this.lives;
-				load(this.lastLoadedFile);
-				this.lives = oldLives;
-			} catch (GameLoadException e) {
-				// Si falla (ej: borraron el archivo), volvemos al nivel por defecto
-				System.out.println("Warning: Unable to reload file. Resetting to default level.");
-				this.lastLoadedFile = null;
-				reset(this.nLevel);
-			}
+			this.gameObjects = new GameObjectContainer();
+			int oldLives = this.lives;
+			//load(this.lastLoadedFile);
+			applayConfig(lastConfig);
+			this.lives = oldLives;
 		} else {
 			// Reset normal
 			reset(this.nLevel);
