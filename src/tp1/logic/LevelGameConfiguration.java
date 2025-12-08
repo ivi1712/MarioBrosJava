@@ -16,210 +16,130 @@ import tp1.logic.gameobjects.MushRoom;
 import tp1.view.Messages;
 
 public class LevelGameConfiguration implements GameConfiguration {
-	private int time;
-	private int points;
-	private int lives;
+	//Atributos
+	private int time = 100;
+	private int points = 0;
+	private int lives = 3;
 	private GameObject mario;
 	private List<GameObject> objects = new ArrayList<>();
 	
-	public LevelGameConfiguration(int nLevel) throws GameModelException {
+	//Necesitamos el juego para pasarselo al consturctor de objetos
+	private GameWorld game;
+	
+	public LevelGameConfiguration(int nLevel, GameWorld game) throws GameModelException {
+		this.game = game;
+		
 		switch (nLevel) {
 		case 0 -> initLevel0();
 		case 1 -> initLevel1();
 		case 2 -> initLevel2();
-		case -1 -> initLevelnegative1();
+		// Caso -1: No hacemos nada. 
+		// Resultado: time=100, objects=[], mario=null. Igual que tu initLevelnegative1.
+		case -1 -> {}
 		// para test opcional, mala configuracion del test
 		case 6 -> initLevel1();
 		default ->{
 			throw new GameModelException(Messages.INVALID_LEVEL_NUMBER);
-		}
-		}
-	}
-	private void initLevel0() {
-		//this.nLevel = 0;
-		this.time = 100;
-		
-		// 1. Mapa
-		//objects = new GameObjectContainer();
-		for(int col = 0; col < 15; col++) {
-			objects.add(new Land(new Position(13,col)));
-			objects.add(new Land(new Position(14,col)));		
-		}
-
-		objects.add(new Land(new Position(Game.DIM_Y-3,9)));
-		objects.add(new Land(new Position(Game.DIM_Y-3,12)));
-		for(int col = 17; col < Game.DIM_X; col++) {
-			objects.add(new Land(new Position(Game.DIM_Y-2, col)));
-			objects.add(new Land(new Position(Game.DIM_Y-1, col)));		
-		}
-
-		objects.add(new Land(new Position(9,2)));
-		objects.add(new Land(new Position(9,5)));
-		objects.add(new Land(new Position(9,6)));
-		objects.add(new Land(new Position(9,7)));
-		objects.add(new Land(new Position(5,6)));
-		
-		// Salto final
-		int tamX = 8;
-		//tamY= 8;
-		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
-		
-		for(int col = 0; col < tamX; col++) {
-			for (int fila = 0; fila < col+1; fila++) {
-				objects.add(new Land(new Position(posIniY- fila, posIniX+ col)));
 			}
+		
 		}
-
-		objects.add(new ExitDoor(new Position(Game.DIM_Y-3, Game.DIM_X-1)));
-
-		// 3. Personajes
-		this.mario = new Mario(this, new Position(Game.DIM_Y-3, 0));
-		objects.add(this.mario);
-
-		objects.add(new Goomba(this, new Position(0, 19)));
-		//objects.add(new Goomba(this, new Position(12, 4)));
 	}
 	
-	private void initLevel1() {
-		this.time = 100;
-		
-		// 1. Mapa
-		objects = new GameObjectContainer();
-		for(int col = 0; col < 15; col++) {
-			objects.add(new Land(new Position(13,col)));
-			objects.add(new Land(new Position(14,col)));		
+	//Niveles
+
+		private void initLevel0() {
+			addCommonMap();
+			this.mario = new Mario(game, new Position(Game.DIM_Y-3, 0));
+			objects.add(new Goomba(game, new Position(0, 19)));
 		}
 
-		objects.add(new Land(new Position(Game.DIM_Y-3,9)));
-		objects.add(new Land(new Position(Game.DIM_Y-3,12)));
-		for(int col = 17; col < Game.DIM_X; col++) {
-			objects.add(new Land(new Position(Game.DIM_Y-2, col)));
-			objects.add(new Land(new Position(Game.DIM_Y-1, col)));		
+		private void initLevel1() {
+			addCommonMap();
+			this.mario = new Mario(game, new Position(Game.DIM_Y-3, 0));
+			addCommonEnemies();
 		}
+		
+		private void initLevel2() {
+			initLevel1(); 
+			objects.add(new Box(game, new Position(9,4)));
+			objects.add(new MushRoom(game, new Position(12,8)));
+			objects.add(new MushRoom(game, new Position(2,20)));
+		}
+		
 
-		objects.add(new Land(new Position(9,2)));
-		objects.add(new Land(new Position(9,5)));
-		objects.add(new Land(new Position(9,6)));
-		objects.add(new Land(new Position(9,7)));
-		objects.add(new Land(new Position(5,6)));
-		
-		// Salto final
-		int tamX = 8;
-		//tamY= 8;
-		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
-		
-		for(int col = 0; col < tamX; col++) {
-			for (int fila = 0; fila < col+1; fila++) {
-				objects.add(new Land(new Position(posIniY- fila, posIniX+ col)));
+		//Metodos aux
+
+		private void addCommonMap() {
+			for(int col = 0; col < 15; col++) {
+				objects.add(new Land(game, new Position(13,col)));
+				objects.add(new Land(game, new Position(14,col)));		
 			}
-		}
 
-		objects.add(new ExitDoor(new Position(Game.DIM_Y-3, Game.DIM_X-1)));
-
-		// 3. Personajes
-		this.mario = new Mario(this, new Position(Game.DIM_Y-3, 0));
-		objects.add(this.mario);
-
-		objects.add(new Goomba(this, new Position(0, 19)));
-		objects.add(new Goomba(this, new Position(4,6)));
-		objects.add(new Goomba(this, new Position(12,6)));
-		objects.add(new Goomba(this, new Position(12,8)));
-		objects.add(new Goomba(this, new Position(10,10)));
-		objects.add(new Goomba(this, new Position(12,11)));
-		objects.add(new Goomba(this, new Position(12,14)));
-	}
-	
-	private void initLevel2() {
-		this.time = 100;
-		
-		// 1. Mapa
-		objects = new GameObjectContainer();
-		for(int col = 0; col < 15; col++) {
-			objects.add(new Land(new Position(13,col)));
-			objects.add(new Land(new Position(14,col)));		
-		}
-
-		objects.add(new Land(new Position(Game.DIM_Y-3,9)));
-		objects.add(new Land(new Position(Game.DIM_Y-3,12)));
-		for(int col = 17; col < Game.DIM_X; col++) {
-			objects.add(new Land(new Position(Game.DIM_Y-2, col)));
-			objects.add(new Land(new Position(Game.DIM_Y-1, col)));		
-		}
-
-		objects.add(new Land(new Position(9,2)));
-		objects.add(new Land(new Position(9,5)));
-		objects.add(new Land(new Position(9,6)));
-		objects.add(new Land(new Position(9,7)));
-		objects.add(new Land(new Position(5,6)));
-		
-		// Salto final
-		int tamX = 8;
-		//tamY= 8;
-		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
-		
-		for(int col = 0; col < tamX; col++) {
-			for (int fila = 0; fila < col+1; fila++) {
-				objects.add(new Land(new Position(posIniY- fila, posIniX+ col)));
+			objects.add(new Land(game, new Position(Game.DIM_Y-3,9)));
+			objects.add(new Land(game, new Position(Game.DIM_Y-3,12)));
+			
+			for(int col = 17; col < Game.DIM_X; col++) {
+				objects.add(new Land(game, new Position(Game.DIM_Y-2, col)));
+				objects.add(new Land(game, new Position(Game.DIM_Y-1, col)));		
 			}
+
+			objects.add(new Land(game, new Position(9,2)));
+			objects.add(new Land(game, new Position(9,5)));
+			objects.add(new Land(game, new Position(9,6)));
+			objects.add(new Land(game, new Position(9,7)));
+			objects.add(new Land(game, new Position(5,6)));
+			
+			int tamX = 8;
+			int posIniX = Game.DIM_X-3-tamX;
+			int posIniY = Game.DIM_Y-3;
+			
+			for(int col = 0; col < tamX; col++) {
+				for (int fila = 0; fila < col+1; fila++) {
+					objects.add(new Land(game, new Position(posIniY- fila, posIniX+ col)));
+				}
+			}
+
+			objects.add(new ExitDoor(game, new Position(Game.DIM_Y-3, Game.DIM_X-1)));
+		}
+		
+		private void addCommonEnemies() {
+			objects.add(new Goomba(game, new Position(0, 19)));
+			objects.add(new Goomba(game, new Position(4,6)));
+			objects.add(new Goomba(game, new Position(12,6)));
+			objects.add(new Goomba(game, new Position(12,8)));
+			objects.add(new Goomba(game, new Position(10,10)));
+			objects.add(new Goomba(game, new Position(12,11)));
+			objects.add(new Goomba(game, new Position(12,14)));
 		}
 
-		objects.add(new ExitDoor(new Position(Game.DIM_Y-3, Game.DIM_X-1)));
+		//INTERFAZ 
 
-		// 3. Personajes
-		this.mario = new Mario(this, new Position(Game.DIM_Y-3, 0));
-		objects.add(this.mario);
+		@Override public int getRemainingTime() { return time; }
+		@Override public int points() { return points; }
+		@Override public int numLives() { return lives; }
+		
+		@Override 
+		public GameObject getMario() {
+			if (this.mario != null) {
+	            return this.mario.copy(); 
+	        }
+	        return null;
+		}
+		
+		@Override 
+		public List<GameObject> getNPCObjects() {
+			//return objects;
+			List<GameObject> copies = new ArrayList<>();
+		    
+		    // Recorremos la lista de objetos originales guardada en memoria
+		    for (GameObject obj : this.objects) {
+		        // Añadimos una COPIA de cada uno a la nueva lista
+		        copies.add(obj.copy());
+		    }
+		    
+		    return copies;
+		}
+		
 
-		objects.add(new Goomba(this, new Position(0, 19)));
-		objects.add(new Goomba(this, new Position(4,6)));
-		objects.add(new Goomba(this, new Position(12,6)));
-		objects.add(new Goomba(this, new Position(12,8)));
-		objects.add(new Goomba(this, new Position(10,10)));
-		objects.add(new Goomba(this, new Position(12,11)));
-		objects.add(new Goomba(this, new Position(12,14)));
-		
-		//practica 2_2
-		// Para probar estas estensiones crear un nuevo nivel 2 que sea exactamente igual el nivel 1 
-		// pero con una caja en la posición (9,4) y dos setas en las posiciones (12,8) y (2,20). 
-		//Las posiciones indicadas siguen el formato: (fila,columna).
-		objects.add(new Box(this, new Position(9,4)));
-		objects.add(new MushRoom(this, new Position(12,8)));
-		objects.add(new MushRoom(this, new Position(2,20)));
-	}
-	
-	private void initLevelnegative1(){
-		this.time = 100;
-		objects = new GameObjectContainer();
-	}
-	@Override
-	public int getRemainingTime() {
-		
-		return 0;
-	}
-
-	@Override
-	public int points() {
-		
-		return 0;
-	}
-
-	@Override
-	public int numLives() {
-		
-		return 0;
-	}
-
-	@Override
-	public GameObject getMario() {
-		
-		return null;
-	}
-
-	@Override
-	public List<GameObject> getNPCObjects() {
-		
-		return null;
-	}
-	
-	
 
 }

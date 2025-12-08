@@ -4,39 +4,41 @@ import tp1.util.MyStringUtils;
 
 public class Messages {
 	
+	// [USO]: Cabecera inicial del juego. Se usa en Main o Controller al iniciar.
 	public static final String VERSION = "3.0";
-
 	public static final String GAME_NAME = "MarioBross";
-
 	public static final String USAGE = "Usage: %s [<level>]".formatted(GAME_NAME);
-
 	public static final String WELCOME = String.format("%s %s%n", GAME_NAME, VERSION);
 
+	// [USO]: Validación de argumentos en el ResetCommand o en el Main (al leer args).
 	public static final String LEVEL_NOT_A_NUMBER = "The level must be a number";
-	public static final String INVALID_LEVEL_NUMBER = "Not valid level number";
+	public static final String INVALID_LEVEL_NUMBER = "Not valid level number"; // Usado en ResetCommand.execute()
+	public static final String LEVEL_NOT_A_NUMBER_ERROR = String.format("%s: %%s", LEVEL_NOT_A_NUMBER); // Usado en ResetCommand.parse()
 
-	public static final String LEVEL_NOT_A_NUMBER_ERROR = String.format("%s: %%s", LEVEL_NOT_A_NUMBER);
-
+	// [USO]: Interfaz de usuario básica en GameView / Controller.
 	public static final String PROMPT = "Command > ";
-
 	public static final String DEBUG = "[DEBUG] Executing: %s%n";
-	public static final String ERROR = "[ERROR] Error: %s";
+	public static final String ERROR = "[ERROR] Error: %s"; // Usado por Controller para formatear cualquier excepción capturada.
 
 	// GAME STATUS
+	// [USO]: En GameView (ConsoleView) para pintar la cabecera del tablero.
 	public static final String NUMBER_OF_CYCLES = "Number of cycles: %s";
-
 	public static final String REMAINING_TIME = "Time: %s";
 	public static final String POINTS = "Points: %s";
 	public static final String NUM_LIVES = "Lives: %s";
 
 	// GAME END MESSAGE
+	// [USO]: En GameView.showEndMessage() para indicar el resultado final.
 	public static final String GAME_OVER = "Game over";
 	public static final String PLAYER_QUITS = "Player leaves the game";
 	public static final String MARIO_WINS = "Thanks, Mario! Your mission is complete.";
+	
 	// Position format
+	// [USO]: Formato genérico para imprimir posiciones (x,y).
 	public static final String POSITION = "(%s,%s)";
 
 	// Other
+	// [USO]: Utilidades de formateo para la vista (MyStringUtils, ConsoleView).
 	public static final String SPACE = " ";
 	public static final String TAB = "   ";
 	public static final String LINE_SEPARATOR = System.lineSeparator();
@@ -45,34 +47,75 @@ public class Messages {
 	public static final String LINE_2TABS = TAB + LINE_TAB;
 
 //Commands
-	// Errores de factorías:
+	// --- ERRORES DE FACTORÍAS Y PARSEO DE OBJETOS ---
+	
+	// [USO]: En CommandGenerator.parse() cuando ningún comando coincide.
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
+	
+	// [USO]: En Game.parseGameObjectFactory() si la factoría devuelve null.
 	public static final String INVALID_GAME_OBJECT = "Invalid game object: \"%s\"";
+	
+	// [USO]: En FileGameConfiguration o GameObjectFactory si se lee un nombre desconocido.
 	public static final String UNKNOWN_GAME_OBJECT = "Unknown game object: \"%s\"";
+	
+	// [USO]: En GameObject.parse() cuando Position.parsePosition() falla.
 	public static final String INVALID_GAME_OBJECT_POSITION = "Invalid object position: \"%s\"";
+	
+	// [USO]: En GameObjectContainer.addObjectFactory() si la posición está ocupada.
 	public static final String NOAVAIBLE_GAME_OBJECT = "No avaible to create a game object in this position";
+	
+	// [USO]: En Position.parsePosition() cuando el formato numérico falla.
 	public static final String INVALID_POSITION_FORMAT = "Invalid position: \"%s\"";
+	
+	// [USO]: En GameObject.parse() (validación límites) o OffBoardException.
 	public static final String INVALID_GAME_OBJECT_POSITION_OFFBOARD = "Object position is off board: \"%s\"";
+	
+	// [USO]: En GameObject.parse() si sobran argumentos.
 	public static final String INVALID_GAME_OBJECT_EXTRA_ARGS = "Object parse error, too much args: \"%s\"";
+	
+	// [USO]: En clases MovingObject (Goomba/Mario) al parsear dirección desconocida.
 	public static final String UNKNOWN_GAME_OBJECT_DIRECTION = "Unknown moving object direction: \"%s\"";
+	
+	// [USO]: En clases MovingObject cuando la dirección es válida (UP) pero no aplicable al objeto.
 	public static final String INVALID_GAME_OBJECT_DIRECTION = "Invalid moving object direction: \"%s\"";
+	
+	// [USO]: En Mario.parse() para tamaño incorrecto.
 	public static final String INVALID_MARIO_SIZE = "Invalid Mario size: \"%s\"";
+	
+	// [USO]: En Box.parse() para estado incorrecto.
 	public static final String INVALID_BOX_STATUS = " Invalid Box status: \"%s\"";
 
-	// Errores de commandos: "%s"
+	// --- ERRORES DE COMANDOS GENÉRICOS ---
+	
+	// [USO]: Validaciones generales de parseo.
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
+	
+	// [USO]: En cualquier Command.parse() si el número de argumentos no encaja.
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
+	
+	// [USO]: En Action.parseAction() (llamado por ActionCommand).
 	public static final String UNKNOWN_ACTION = "Unknown action: \"%s\"";
-	public static final String ILLEGAL_ACTION = "Illegal action: \"%s\"";
+	public static final String ILLEGAL_ACTION = "Illegal action: \"%s\""; // (Menos usado, para acciones prohibidas por lógica)
+	
+	// [USO]: Errores genéricos de comando.
 	public static final String INVALID_COMMAND = "Invalid command: %s";
 	public static final String INVALID_COMMAND_PARAMETERS = "Invalid command parameters";
+	
+	// [USO]: En Command.execute() (ej: AddObjectCommand) para envolver GameModelException.
 	public static final String ERROR_COMMAND_EXECUTE = "Command execute problem";
+	
+	// [USO]: En ActionCommand.parse() si la lista final de acciones queda vacía.
 	public static final String ACTION_COMMAND_EMPTY = "Incorrect 'action command', because the action list is empty (all actions are unknown).";
+	
+	// [USO]: Error genérico de parseo.
 	public static final String COMMAND_PARSE_PROBLEM = "Command parse problem";
 	
+	// [USO]: En operaciones de ficheros (Save/Load) si hay SecurityException.
 	public static final String ACCESS_DENIED = "Acceso denegado al archivo: \"%s\" ";
 
+	// --- AYUDA (HELP) ---
 	
+	// [USO]: Cabecera del comando Help.
 	public static final String HELP_AVAILABLE_COMMANDS = "Available commands:";
 	@Deprecated
 	/* @formatter:off */
@@ -86,7 +129,12 @@ public class Messages {
 	/* @formatter:on */
 	@Deprecated
 	public static final String HELP = String.join(LINE_SEPARATOR+"   ", HELP_LINES) + LINE_SEPARATOR;
+	
+	// [USO]: En AbstractCommand.helpText() para formatear la ayuda de cada comando.
 	public static final String COMMAND_HELP_TEXT = "%s: %s";
+	
+	// --- DEFINICIÓN DE COMANDOS (Nombre, Atajo, Detalles, Ayuda) ---
+	// Se usan en los constructores de cada clase Command (super(...)).
 	
 	// UPDATE
 	public static final String COMMAND_UPDATE_NAME = "update";
@@ -127,27 +175,39 @@ public class Messages {
 	public static final String COMMAND_RESET_DETAILS = "[r]eset [numLevel]";
 	public static final String COMMAND_RESET_HELP = "reset the game to initial configuration if not numLevel else load the numLevel map";
 
-	//LOAD
+	//LOAD (Persistencia)
 	public static final String LOAD_COMMAND_NAME = "load";
 	public static final String LOAD_COMMAND_SHORTCUT = "l";
 	public static final String LOAD_COMMAND_DETAILS = "[l]oad <fileName>";
 	public static final String LOAD_COMMAND_HELP = "load the game configuration from text file <fileName>";
+	
+	// [USO]: Mensaje genérico de error de carga (puede usarse en excepciones encadenadas).
 	public static final String ERROR_LOAD = "Error loading game: ";
+	
+	// [USO]: En FileGameConfiguration o Game.load() cuando hay error de formato general.
 	public static final String INVALID_FILE_CONFIGURATION = "Invalid file \"%s\" configuration";
+	
+	// [USO]: En LoadCommand.execute() para envolver la excepción del modelo.
 	public static final String UNABLE_TO_LOAD = "Unable to load game configuration from file \"%s\"";
+	
+	// [USO]: En FileGameConfiguration al leer la cabecera (100 0 3).
 	public static final String INVALID_GAME_STATUS = "Incorrect game status \"%s\"";
 
-	//SAVE
+	//SAVE (Persistencia)
 	public static final String COMMAND_SAVE_COMMAND_NAME = "save";
 	public static final String COMMAND_SAVE_COMMAND_SHORTCUT = "s";
 	public static final String COMMAND_SAVE_COMMAND_DETAILS = "[s]ave <fileName>";
 	public static final String COMMAND_SAVE_COMMAND_HELP = "save the actual configuration in text file <fileName>";
+	
+	// [USO]: En FileGameConfiguration (constructor) cuando no encuentra el archivo.
 	public static final String FILE_NOT_FOUND = "File not found: \"%s\"";
+	
+	// [USO]: En SaveCommand.execute() al terminar con éxito.
 	public static final String FILE_SAVED_CORRECTLY = "   File \"%s\" correctly saved";
 
 	
-	
-// GameObjectFactory
+// GameObjectFactory (Identificadores para parseo)
+// [USO]: Usados en el método parse() de cada clase concreta y en la Factoría.
 	
 	// LAND
 	public static final String LAND_NAME = "land";
@@ -174,6 +234,7 @@ public class Messages {
 	public static final String BOX_SHORTCUT = "b";
 
 //Symbols
+// [USO]: En el método getIcon() de cada GameObject y en la vista para pintar celdas vacías.
 	public static final String EMPTY = "";
 	public static final String LAND = MyStringUtils.repeat("▓",ConsoleView.CELL_SIZE);
 	public static final String EXIT_DOOR = "🚪";

@@ -2,6 +2,7 @@ package tp1.control.commands;
 
 import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.CommandParseException;
+import tp1.exceptions.GameModelException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
 

@@ -17,34 +17,25 @@ public class ResetCommand extends AbstractCommand {
 	
 	//Constructor
 	public ResetCommand() {
-        //super("reset", "r", "[r]eset [numLevel]", "reset the game to initial configuration if not numLevel else load the numLevel map");
 		super(NAME, SHORTCUT, DETAILS, HELP);
 	}
 
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
     	if(level == null) {
-    		game.resetStats();
+    		
     		game.reset();
     		view.showGame();
     	}else {
-    		
-//    		//Si reset falla el nivel no existe
-//    		if(!game.reset(level)) {
-//    			//En vez de enviar esto: view.showError(Messages.INVALID_LEVEL_NUMBER);
-//    			//Ahora enviamos esto
-//    			throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);   			
-//    		}else {
-//    			game.resetStats();
-//    			view.showGame();
-//    		}
-    		try {
-    			game.reset(level);
-    		} catch (GameModelException e) {
-				throw new CommandExecuteException(e);
-			}
-    		
     		game.resetStats();
+    		
+    		if(!game.reset(level)) {
+    			//En vez de enviar esto: view.showError(Messages.INVALID_LEVEL_NUMBER);
+    			//Ahora enviamos esto
+    			throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);   			
+    		}else {
+    			game.resetStats();
+    		}
 			view.showGame();
     	}
     	
