@@ -24,16 +24,14 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	
 	private Mario mario;
 	
-	private GameObjectContainer gameObjects;
-	private GameConfiguration lastConfig;
+	private GameObjectContainer gameObjects = new GameObjectContainer();
+	private GameConfiguration lastConfig = null;
 	
 	
 	private boolean finish = false;
 	private boolean wins = false;
 	private boolean looses = false;
 	
-	//Atributo nuevo, para gestionar el reset. Con la carga
-	private String lastLoadedFile = null;
 	
 	public Game(int nLevel) {
 		this.remainingTime = 100;
@@ -105,14 +103,8 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	
 	//Metodo modificado para soportar ficheros
 	public void reset() {
-		// Si habíamos cargado un fichero, intentamos recargarlo
-		if (this.lastLoadedFile != null) {
-			this.gameObjects = new GameObjectContainer();
-			int oldLives = this.lives;
-			//load(this.lastLoadedFile);
-			applayObjectConfig(lastConfig);
-			this.remainingTime = lastConfig.getRemainingTime();
-			this.lives = oldLives;
+		if (this.lastConfig != null) {
+			applyObjectConfigReset(lastConfig);
 		} else {
 			// Reset normal
 			reset(this.nLevel);
@@ -124,6 +116,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			this.lives = defaultLives;
 			this.points = 0;
 		}
+
 	}
 	
 	public String positionToString(int col, int row) {
@@ -182,7 +175,9 @@ public class Game implements GameWorld, GameModel, GameStatus{
 	}
 	
 	public void marioDead() {
+		
 		lives--;
+		
 		if (this.lives == 0) {
 			//finish();
 			//System.out.println(Messages.GAME_OVER);
@@ -376,7 +371,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 
 	@Override
 	public boolean interactWith() {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 	public boolean offBoard(Position p) {
@@ -407,28 +402,28 @@ public class Game implements GameWorld, GameModel, GameStatus{
 
 	//load 
 	public void load(String fileName) throws GameLoadException {
-		// TODO Auto-generated method stub
+		
 		GameConfiguration config = new FileGameConfiguration(fileName, this);
 				
 		applayConfig(config);
 		
-		this.lastConfig = new FileGameConfiguration(fileName, this);
-		this.lastLoadedFile = fileName;
+		this.lastConfig = config;
 	}
 	
 	//Aplicamos la configuracion dada por el fichero
 	private void applayConfig(GameConfiguration config) {
 
-		//Configuracion de las cosas
-		 this.remainingTime = config.getRemainingTime();
+		//Configuracion de puntos y numero de vidas
 		 this.points = config.points();
 		 this.lives = config.numLives();
+		 this.remainingTime = config.getRemainingTime();
 		 
-		 applayObjectConfig(config);
+		 // configuracion de objetos y tiempo restante
+		 applyObjectConfig(config);
 		 
 	}
 	
-	private void applayObjectConfig(GameConfiguration config){
+	private void applyObjectConfig(GameConfiguration config){
 		//Reinicia el contenedor de objetos
 		 this.gameObjects = new GameObjectContainer();
 		 
@@ -442,6 +437,12 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		  for (GameObject obj : config.getNPCObjects()) {
 		        gameObjects.add(obj);
 		  }
+	}
+	
+	// para el metodo reset, donde además de resetear los objetos, necesitamos resetear el tiempo
+	private void applyObjectConfigReset(GameConfiguration config){
+		this.remainingTime = config.getRemainingTime();
+		applyObjectConfig(config);
 	}
 	
 }

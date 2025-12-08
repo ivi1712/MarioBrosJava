@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.CommandParseException;
-import tp1.exceptions.GameModelException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.logic.GameModel;

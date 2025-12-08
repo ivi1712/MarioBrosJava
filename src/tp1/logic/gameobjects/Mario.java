@@ -7,8 +7,6 @@ import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
 import tp1.logic.ActionList;
-import tp1.logic.FileGameConfiguration;
-import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
 import tp1.view.Messages;
 import tp1.logic.Position;
@@ -372,5 +370,4 @@ public class Mario extends MovingObject{
         newMario.avanza = this.avanza;  
         return newMario;
 	}
-	
 }

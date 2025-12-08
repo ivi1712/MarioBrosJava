@@ -1,6 +1,5 @@
 package tp1.logic.gameobjects;
 
-import tp1.exceptions.GameParseException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;

@@ -1,14 +1,9 @@
 package tp1.logic.gameobjects;
 
-import java.text.ParseException;
-
-import tp1.exceptions.GameParseException;
 import tp1.exceptions.ObjectParseException;
 import tp1.exceptions.OffBoardException;
 import tp1.exceptions.PositionParseException;
 import tp1.logic.Action;
-import tp1.logic.FileGameConfiguration;
-import tp1.logic.GameObjectContainer;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
 import tp1.view.Messages;
@@ -144,7 +139,7 @@ public abstract class GameObject implements GameItem {
 
 
 	public GameObject copy() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

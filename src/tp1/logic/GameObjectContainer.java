@@ -1,7 +1,5 @@
 package tp1.logic;
 
-import tp1.exceptions.CommandParseException;
-import tp1.exceptions.NoAvaibleCreateException;
 import tp1.logic.gameobjects.*;
 import tp1.view.Messages;
 

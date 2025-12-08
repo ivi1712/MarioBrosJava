@@ -17,11 +17,11 @@ public class LoadCommand extends AbstractCommand {
 
 	public LoadCommand(String name, String shortcut, String details, String help) {
 		super(NAME, SHORTCUT, DETAILS, HELP);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public LoadCommand() {
-		// TODO Auto-generated constructor stub
+		
 		super(NAME, SHORTCUT, DETAILS, HELP);
 	}
 
@@ -40,7 +40,7 @@ public class LoadCommand extends AbstractCommand {
 
 	@Override
 	public Command parse(String[] commandWords) throws CommandParseException {
-		// TODO Auto-generated method stub
+		
 		if(matchCommandName(commandWords[0])){
 			if(commandWords.length != 2)
                 throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);

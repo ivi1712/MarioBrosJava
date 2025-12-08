@@ -6,7 +6,6 @@ import tp1.control.commands.CommandGenerator;
 import tp1.exceptions.CommandException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
-import tp1.view.Messages;
 
 /**
  *  Accepts user input and coordinates the game execution logic

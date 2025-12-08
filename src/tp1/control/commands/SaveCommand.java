@@ -20,7 +20,7 @@ public class SaveCommand extends AbstractCommand {
 	}
 
 	public SaveCommand() {
-		// TODO Auto-generated constructor stub
+		
 		super(NAME, SHORTCUT, DETAILS, HELP);
 	}
 

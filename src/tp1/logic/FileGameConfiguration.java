@@ -30,7 +30,7 @@ public class FileGameConfiguration implements GameConfiguration {
 		
 		this.fileName = fileName;
 		
-		// TODO Auto-generated constructor stub
+		
 		try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(fileName)))){
 			
 			//Leemos la intro del jeugo
@@ -130,6 +130,5 @@ public class FileGameConfiguration implements GameConfiguration {
 	    
 	    return copies;
 	}
-	
 
 }
