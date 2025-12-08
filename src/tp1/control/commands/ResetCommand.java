@@ -2,6 +2,7 @@ package tp1.control.commands;
 
 import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.CommandParseException;
+import tp1.exceptions.GameModelException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
@@ -28,15 +29,23 @@ public class ResetCommand extends AbstractCommand {
     		view.showGame();
     	}else {
     		
-    		//Si reset falla el nivel no existe
-    		if(!game.reset(level)) {
-    			//En vez de enviar esto: view.showError(Messages.INVALID_LEVEL_NUMBER);
-    			//Ahora enviamos esto
-    			throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);   			
-    		}else {
-    			game.resetStats();
-    			view.showGame();
-    		}
+//    		//Si reset falla el nivel no existe
+//    		if(!game.reset(level)) {
+//    			//En vez de enviar esto: view.showError(Messages.INVALID_LEVEL_NUMBER);
+//    			//Ahora enviamos esto
+//    			throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);   			
+//    		}else {
+//    			game.resetStats();
+//    			view.showGame();
+//    		}
+    		try {
+    			game.reset(level);
+    		} catch (GameModelException e) {
+				throw new CommandExecuteException(e);
+			}
+    		
+    		game.resetStats();
+			view.showGame();
     	}
     	
     }

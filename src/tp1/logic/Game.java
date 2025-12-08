@@ -3,6 +3,7 @@ package tp1.logic;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.GameLoadException;
 import tp1.exceptions.GameModelException;
 import tp1.exceptions.ObjectParseException;
@@ -87,18 +88,22 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		this.finish = true;
 	}
 	
-	public boolean reset(int nLevel) {
+	public void reset(int nLevel) throws GameModelException{
+		
+		GameConfiguration actualLevel = new LevelGameConfiguration(nLevel);
 		this.nLevel = nLevel;
-		switch (nLevel) {
-		case 0 -> initLevel0();
-		case 1 -> initLevel1();
-		case 2 -> initLevel2();
-		case -1 -> initLevelnegative1();
-		default ->{
-			return false;
-		}
-		}
-		return true;
+//		switch (nLevel) {
+//		case 0 -> initLevel0();
+//		case 1 -> initLevel1();
+//		case 2 -> initLevel2();
+//		case -1 -> initLevelnegative1();
+//		// para test opcional, mala configuracion del test
+//		case 6 -> initLevel1();
+//		default ->{
+//			return false;
+//		}
+//		}
+		//return true;
 	}
 	
 	//Metodo modificado para soportar ficheros
@@ -107,6 +112,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 			applyObjectConfigReset(lastConfig);
 		} else {
 			// Reset normal
+			resetStats();
 			reset(this.nLevel);
 		}
 	}
@@ -405,13 +411,13 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		
 		GameConfiguration config = new FileGameConfiguration(fileName, this);
 				
-		applayConfig(config);
+		applyConfig(config);
 		
 		this.lastConfig = config;
 	}
 	
 	//Aplicamos la configuracion dada por el fichero
-	private void applayConfig(GameConfiguration config) {
+	private void applyConfig(GameConfiguration config) {
 
 		//Configuracion de puntos y numero de vidas
 		 this.points = config.points();

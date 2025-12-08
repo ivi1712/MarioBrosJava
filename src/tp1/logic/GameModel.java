@@ -12,7 +12,7 @@ public interface GameModel {
 	public void update();
 	public void reset();
 	public void addAction(Action act);
-	public boolean reset(int Level);
+	public void reset(int Level) throws GameModelException;
 	public void exit();
 	public void parseGameObjectFactory(String objWords[]) throws ObjectParseException, OffBoardException;
 	public void resetStats();

@@ -19,6 +19,8 @@ public class Mario extends MovingObject{
 	private Action defaultAvanza = Action.RIGHT;
 	private ActionList actlist;	
 	
+	private boolean flying = false;
+	
 	public Mario(GameWorld game, Position position) {
 		super(game, position);
 		this.actlist = new ActionList();
@@ -93,16 +95,19 @@ public class Mario extends MovingObject{
 					actionMovement(actlist.nextAction());
 					game.doInteractions(this);
 				}
-				return;
 			}
 			//automatico big
-			if(!automaticMovement()) {
+			else if(!automaticMovement()) {
 				game.doInteractions(this);
-				return;
-			}		
+			}	
+			checkFlying();
+			
 	}
 	
-	
+	private void checkFlying() {
+		if(!game.isSolid(this.pos.moved(Action.DOWN))) flying = true;
+		else flying = false;
+	}
 
 	private void actionMovement(Action dir) {
 		if(isNextToLateral(dir) || isNextToSolid(dir) || isNextToRoof(dir)) {
@@ -113,6 +118,10 @@ public class Mario extends MovingObject{
 			}
 			lookDirection(dir, true);
 		}else {
+			if (dir == Action.UP && flying) {
+				caidaUnitaria(pos.moved(Action.DOWN));
+			    return; 
+			}
 			if (lookDirection(dir, false)) return;
 			marioMove(dir);
 		}
@@ -125,8 +134,10 @@ public class Mario extends MovingObject{
 	public boolean lookDirection(Action dir, boolean choque) {
 		
 		if(choque) {
-			if(dir == Action.LEFT) dir = Action.RIGHT;
-			if(dir == Action.RIGHT) dir = Action.LEFT;
+			if(!headChoque()) {
+				if(dir == Action.LEFT) dir = Action.RIGHT;
+				else if(dir == Action.RIGHT) dir = Action.LEFT;
+			}
 		}
 		
 		if(dir == Action.DOWN) {
@@ -146,6 +157,11 @@ public class Mario extends MovingObject{
 			this.downstop = false;
 		}
 		return choque;
+	}
+	
+	// si la cabeza choca, no cambia la direccion
+	private boolean headChoque() {
+		return big && (game.isSolid(this.pos.moved(Action.UP).moved(Action.RIGHT)) || game.isSolid(this.pos.moved(Action.UP).moved(Action.LEFT)));
 	}
 	
 	
