@@ -15,7 +15,6 @@ public abstract class NoParamsCommand extends AbstractCommand {
 
 	@Override
 	public Command parse(String[] commandWords) throws CommandParseException{
-		//Cambio: estetica & entendimiento mas legible
 		if(matchCommandName(commandWords[0])) {
 			if (commandWords.length > 1) 
 				throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);

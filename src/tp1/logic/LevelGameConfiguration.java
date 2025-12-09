@@ -4,7 +4,6 @@ package tp1.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import tp1.exceptions.CommandExecuteException;
 import tp1.exceptions.GameModelException;
 import tp1.logic.gameobjects.Box;
 import tp1.logic.gameobjects.ExitDoor;
@@ -16,7 +15,6 @@ import tp1.logic.gameobjects.MushRoom;
 import tp1.view.Messages;
 
 public class LevelGameConfiguration implements GameConfiguration {
-	//Atributos
 	private int time = 100;
 	private int points = 0;
 	private int lives = 3;

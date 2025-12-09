@@ -45,7 +45,6 @@ public enum Action {
 			return DOWN;
 		}
 		default -> {
-			//Aqui se coje el error de ActionCommand
 			throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(word));
 			}
 		}

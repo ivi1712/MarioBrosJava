@@ -29,7 +29,6 @@ public class LoadCommand extends AbstractCommand {
 	public void execute(GameModel game, GameView view) throws CommandExecuteException {
 		try{
             game.load(fileName); 
-            //Esto no se si esta bien
             view.showGame(); 
         }catch(GameModelException e){
             throw new CommandExecuteException(Messages.UNABLE_TO_LOAD.formatted(fileName), e);
