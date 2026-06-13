@@ -21,22 +21,17 @@ public class ResetCommand extends AbstractCommand {
 
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
-    	if(level == null) {
-    		
-    		game.reset();
-    		view.showGame();
-    	}else {
-    		game.resetStats();
-    		
-    		if(!game.reset(level)) {
-    			//En vez de enviar esto: view.showError(Messages.INVALID_LEVEL_NUMBER);
-    			//Ahora enviamos esto
-    			throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);   			
-    		}else {
-    			game.resetStats();
-    		}
-			view.showGame();
-    	}
+    	
+    	if (level == null) {
+            game.reset();
+        } else {
+            if (!game.reset(level)) {
+                throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);
+            }
+            game.resetStats();
+        }
+        view.showGame();
+    	
     	
     }
     

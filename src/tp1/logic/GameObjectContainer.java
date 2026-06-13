@@ -89,7 +89,7 @@ public class GameObjectContainer {
 			if (!gobj.isAlive()) return;
 			if (!obj.isAlive()) continue;
 			obj.interactWith(gobj);
-		}//6574
+		}
 	}
 	
 	//toString

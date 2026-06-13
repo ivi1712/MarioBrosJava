@@ -73,6 +73,15 @@ public class MushRoom extends MovingObject {
 			} catch (PositionParseException e) {
 				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
 			}
+
+			if (game.offBoard(p)) {
+				throw new OffBoardException(Messages.INVALID_GAME_OBJECT_POSITION_OFFBOARD.formatted(String.join(" ", objWords)));
+			}
+
+			if (objWords.length > 3) {
+				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_EXTRA_ARGS.formatted(String.join(" ", objWords)));
+			}
+
 			MushRoom m = new MushRoom(game,p);
 			
 			// direccion
@@ -80,7 +89,7 @@ public class MushRoom extends MovingObject {
 				// direccion si existe
 				try {
 					Action dir = Action.parseAction(objWords[2]);
-					if (dir == Action.RIGHT  || dir == Action.LEFT) m.avanza = dir;
+					if (dir == Action.RIGHT  || dir == Action.LEFT || dir == Action.STOP) m.avanza = dir;
 					else throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)));
 				}catch (ActionParseException e) {
 					throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)), e);

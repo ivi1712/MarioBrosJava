@@ -25,7 +25,7 @@ public class FileGameConfiguration implements GameConfiguration {
 	// Guardamos el nombre para mensajes de error si fuera necesario
 	private String fileName;
 
-	public FileGameConfiguration(String fileName, Game game) throws  GameLoadException {
+	public FileGameConfiguration(String fileName, GameWorld game) throws  GameLoadException {
 		
 		
 		this.fileName = fileName;
@@ -42,6 +42,10 @@ public class FileGameConfiguration implements GameConfiguration {
 			
 		}catch(FileNotFoundException e) {
 			throw new GameLoadException(Messages.FILE_NOT_FOUND.formatted(fileName), e);
+		}catch(GameLoadException e) {
+			throw e;
+		}catch(Exception e) {
+			throw new GameLoadException(Messages.INVALID_FILE_CONFIGURATION.formatted(fileName), e);
 		}
 
 	}
@@ -51,14 +55,24 @@ public class FileGameConfiguration implements GameConfiguration {
 	private void readStatusGame(Scanner scanner) throws GameLoadException {
 		String line = "";
 		try {
-			if (scanner.hasNextLine()) {
-				line = scanner.nextLine().trim();
-				// Procesamos la línea con un scanner secundario para asegurar formato
-				try (Scanner lineScanner = new Scanner(line)) {
-					this.time = lineScanner.nextInt();
-					this.points = lineScanner.nextInt();
-					this.lives = lineScanner.nextInt();
+			if (!scanner.hasNextLine()) {
+				throw new IllegalArgumentException();
+			}
+
+			line = scanner.nextLine().trim();
+			// Procesamos la línea con un scanner secundario para asegurar formato
+			try (Scanner lineScanner = new Scanner(line)) {
+				int parsedTime = lineScanner.nextInt();
+				int parsedPoints = lineScanner.nextInt();
+				int parsedLives = lineScanner.nextInt();
+
+				if (lineScanner.hasNext()) {
+					throw new IllegalArgumentException();
 				}
+
+				this.time = parsedTime;
+				this.points = parsedPoints;
+				this.lives = parsedLives;
 			}
 		} catch (Exception e) {
 			throw new GameLoadException(Messages.INVALID_GAME_STATUS.formatted(line));
@@ -86,10 +100,6 @@ public class FileGameConfiguration implements GameConfiguration {
 				// Delegamos en la factoría (que ya lanza ObjectParseException si falla)
 				GameObject obj = GameObjectFactory.parse(words, game);
 				objects.add(obj);
-				if (obj == null) {
-					// Si la factoría devuelve null es que el objeto es desconocido
-					throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT.formatted(line));
-				}
 			} catch (GameModelException e) {
 				// Envolvemos cualquier error de parseo de objetos
 				throw new GameLoadException(Messages.INVALID_FILE_CONFIGURATION.formatted(fileName) , e);

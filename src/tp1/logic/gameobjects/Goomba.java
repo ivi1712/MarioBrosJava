@@ -49,7 +49,7 @@ public class Goomba extends MovingObject{
 					// direccion si existe
 					try {
 						Action dir = Action.parseAction(objWords[2]);
-						if (dir == Action.RIGHT  || dir == Action.LEFT) g.avanza = dir;
+						if (dir == Action.RIGHT  || dir == Action.LEFT || dir == Action.STOP) g.avanza = dir;
 						else throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)));
 					}catch (ActionParseException e) {
 						throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)), e);

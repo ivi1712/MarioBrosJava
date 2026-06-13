@@ -60,6 +60,9 @@ public class Mario extends MovingObject{
 			if (objWords.length >2) {
 				try {
 					Action act = Action.parseAction(objWords[2]);
+					if (act != Action.RIGHT && act != Action.LEFT && act != Action.STOP) {
+						throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)));
+					}
 					m.lookDirection(act, false);
 				} catch (ActionParseException e) {
 					throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT_DIRECTION.formatted(String.join(" ", objWords)), e);

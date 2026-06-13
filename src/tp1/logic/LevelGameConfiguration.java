@@ -32,10 +32,9 @@ public class LevelGameConfiguration implements GameConfiguration {
 		case 1 -> initLevel1();
 		case 2 -> initLevel2();
 		// Caso -1: No hacemos nada. 
-		// Resultado: time=100, objects=[], mario=null. Igual que tu initLevelnegative1.
+		
 		case -1 -> {}
-		// para test opcional, mala configuracion del test
-		case 6 -> initLevel1();
+
 		default ->{
 			throw new GameModelException(Messages.INVALID_LEVEL_NUMBER);
 			}

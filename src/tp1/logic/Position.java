@@ -27,7 +27,7 @@ public final class Position {
 	}
 	
 	public boolean isLateral(Position p) {
-		return p.col > Game.DIM_X || p.col < 0;
+		return p.col >= Game.DIM_X || p.col < 0;
 	}
 	
 	public boolean isRoof(Position p) {
@@ -40,17 +40,22 @@ public final class Position {
 	}
 	
 	public static Position parsePosition(String parse) throws PositionParseException{
-		if (parse == null) return null;
-		String[] parseList = parse.split(",");
-		parseList[0] = parseList[0].replaceAll("\\(", "");
-		parseList[1] = parseList[1].replaceAll("\\)", "");
-		Position p;
+		if (parse == null) {
+			throw new PositionParseException(Messages.INVALID_POSITION_FORMAT.formatted(parse));
+		}
+
+		String[] parseList = parse.split(",", -1);
+		if (parseList.length != 2) {
+			throw new PositionParseException(Messages.INVALID_POSITION_FORMAT.formatted(parse));
+		}
+
+		String rowText = parseList[0].replaceAll("\\(", "").trim();
+		String colText = parseList[1].replaceAll("\\)", "").trim();
 		try {
-			p = new Position(Integer.parseInt(parseList[0]), Integer.parseInt(parseList[1]));
+			return new Position(Integer.parseInt(rowText), Integer.parseInt(colText));
 		} catch(NumberFormatException e) {
 			throw new PositionParseException(Messages.INVALID_POSITION_FORMAT.formatted(parse), e);
 		}
-		return p;
 	}
 
 }

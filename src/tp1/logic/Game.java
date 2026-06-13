@@ -228,9 +228,7 @@ public class Game implements GameWorld, GameModel, GameStatus{
 		
 		//Resto de objetos que no son 
 		GameObject gameobject = GameObjectFactory.parse(objWords, this);
-		if(gameobject == null)
-			throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT.formatted(String.join(" ", objWords)));
-			gameObjects.addObjectFactory(gameobject);
+		gameObjects.addObjectFactory(gameobject);
 	}
 	
 	

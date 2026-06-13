@@ -42,6 +42,10 @@ public class Box extends GameObject {
 			} catch (PositionParseException e) {
 				throw new ObjectParseException(Messages.INVALID_GAME_OBJECT_POSITION.formatted(String.join(" ", objWords)), e);
 			}
+
+			if (game.offBoard(p)) {
+				throw new OffBoardException(Messages.INVALID_GAME_OBJECT_POSITION_OFFBOARD.formatted(String.join(" ", objWords)));
+			}
 				
 			// crea instancia de box 
 			Box b = new Box(game, p);
@@ -81,7 +85,6 @@ public class Box extends GameObject {
 	public boolean receiveInteraction(Mario m) {
 		if(isFull()) {
 			game.addPoints(pointsAdd);
-			//game.addMushroom(this.pos);
 			game.addGameObjectPending(new MushRoom(game, this.pos.moved(Action.UP)));
 			this.full = false;
 			m.receiveInteraction(this);		
